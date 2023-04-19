@@ -27,3 +27,7 @@ dist-ssr
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Temp remove .github
+.github
+!.github/workflows
