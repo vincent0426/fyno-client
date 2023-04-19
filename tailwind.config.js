@@ -5,7 +5,11 @@ module.exports = {
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            height: {
+                onePage: "calc(100vh - 5rem)", // height that is full page except for header.
+            },
+        },
     },
     plugins: [],
 };
