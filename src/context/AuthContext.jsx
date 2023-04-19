@@ -22,6 +22,10 @@ const authReducer = (state, action) => {
     }
 };
 
+const axiosClient = axios.create({
+    baseURL: "http://localhost:8080",
+});
+
 export function AuthProvider({ children }) {
     const navigate = useNavigate();
     const [state, dispatch] = useReducer(authReducer, {
@@ -37,9 +41,11 @@ export function AuthProvider({ children }) {
                 console.log(user);
 
                 if (user) {
-                    // if time between last_sign_in_at and created_at is less than 1 minute, then it's a new user
-                    if (user.last_sign_in_at - user.created_at < 60000) {
-                        axios.post("/api/users", {
+                    const isUserInDB = await axiosClient.get(`/api/users/${user.id}`);
+                    console.log(isUserInDB);
+
+                    if (!isUserInDB.data.data) {
+                        axiosClient.post("/api/users", {
                             id: user.id,
                         });
                     }
