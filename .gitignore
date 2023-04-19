@@ -31,3 +31,5 @@ dist-ssr
 # Temp remove .github
 .github
 !.github/workflows
+
+.env
