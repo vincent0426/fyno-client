@@ -1,4 +1,4 @@
-# Find your next owner
+# FYNO Client
 
 1. Clone the repo
 ```sh
