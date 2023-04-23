@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 import CircleLoader from "react-spinners/CircleLoader";
 
 import ProfileDropdown from "../components/Header/ProfileDropdown";
-import { useAuthContext } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { useLogout } from "../hooks/useLogout";
 
 const navigation = [
@@ -34,7 +34,7 @@ const navigation = [
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { user, isAuthenticating } = useAuthContext();
+    const { user, isAuthenticating } = useAuth();
     const { logout } = useLogout();
     return (
         isAuthenticating ? (

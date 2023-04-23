@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { supabaseClient } from "../utils/supabase";
-import { useAuthContext } from "./useAuth";
+import { useAuth } from "./useAuth";
 
 export const useLogout = () => {
     const navigate = useNavigate();
-    const { dispatch } = useAuthContext();
+    const { dispatch } = useAuth();
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
