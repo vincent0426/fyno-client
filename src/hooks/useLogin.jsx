@@ -17,6 +17,10 @@ export const useLogin = () => {
                 provider,
                 options: {
                     redirectTo: `${window.location.origin}${path}`,
+                    queryParams: {
+                        access_type: "offline",
+                        prompt: "consent",
+                    },
                 },
             });
 
