@@ -1,8 +1,8 @@
-import axios from "axios";
 import PropTypes from "prop-types";
 import { createContext, useEffect, useMemo, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import axiosClient from "../utils/axiosClient";
 import { supabaseClient } from "../utils/supabase";
 
 export const AuthContext = createContext();
@@ -21,10 +21,6 @@ const authReducer = (state, action) => {
         return state;
     }
 };
-
-const axiosClient = axios.create({
-    baseURL: "http://localhost:8080",
-});
 
 export function AuthProvider({ children }) {
     const navigate = useNavigate();
