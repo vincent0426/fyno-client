@@ -1,0 +1,16 @@
+.carousel .slide {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.carousel-slider .control-dots {
+    position: absolute !important;
+    bottom: -12px !important;
+}
+
+.control-dots .dot {
+    border: 1px solid black !important;
+    width: 10px !important;
+    height: 10px !important;
+    margin: 0 5px !important;
+}
