@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { createContext, useEffect, useMemo, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { addUser, getUser } from "../api/users";
 import axiosClient from "../utils/axiosClient";
 import { supabaseClient } from "../utils/supabase";
 
@@ -31,6 +32,8 @@ export function AuthProvider({ children }) {
     const [isAuthenticating, setIsAuthenticating] = useState(true);
 
     useEffect(() => {
+        console.log("auth provider");
+
         const checkUser = async () => {
             try {
                 const { data: { user } } = await supabaseClient.auth.getUser();
@@ -38,25 +41,24 @@ export function AuthProvider({ children }) {
 
                 if (user) {
                     const isUserInDB = await axiosClient.get(`/api/users/${user.id}`);
-                    console.log(isUserInDB);
 
                     if (!isUserInDB.data.data) {
-                        axiosClient.post("/api/users", {
+                        console.log("user not in db", user);
+                        await addUser({
                             id: user.id,
+                            email: user.email,
+                            name: user.email,
+                            avatar_url: import.meta.env.VITE_DEFAULT_AVATAR,
                         });
                     }
 
+                    const { data } = await getUser(user.id);
+
+                    console.log(data);
                     dispatch({
                         type: "LOGIN",
-                        payload: {
-                            id: user.id,
-                            email: user.user_metadata.email,
-                            name: user.user_metadata.name,
-                            avatar_url: user.user_metadata.avatar_url,
-                        },
+                        payload: data.data,
                     });
-
-                    // localStorage.setItem("user", JSON.stringify(userProfile));
                 } else {
                     dispatch({
                         type: "LOGOUT",

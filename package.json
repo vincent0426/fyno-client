@@ -25,6 +25,8 @@
         "react-router-dom": "^6.9.0",
         "react-select": "^5.7.2",
         "react-spinners": "^0.13.8",
+        "sweetalert2": "^11.7.3",
+        "universal-cookie": "^4.0.4",
         "uuid": "^9.0.0",
         "vite-plugin-eslint": "^1.8.1"
     },

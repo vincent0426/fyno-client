@@ -1,13 +1,24 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { supabaseClient } from "../utils/supabase";
 
 export const useLogin = () => {
-    const navigate = useNavigate();
     const location = useLocation();
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    const login = async (email, password) => {
+        setIsLoading(true);
+
+        const response = await supabaseClient.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        setIsLoading(false);
+        return response;
+    };
 
     const loginWithProvider = async (provider) => {
         const path = location.state?.from || "/";
@@ -34,6 +45,6 @@ export const useLogin = () => {
     };
 
     return {
-        error, isLoading, loginWithProvider,
+        error, isLoading, loginWithProvider, login,
     };
 };

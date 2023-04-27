@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
+import { v4 as uuidv4 } from "uuid";
 
 import ImageUploader from "../components/ImageUploader/ImageUploader";
 import axiosClient from "../utils/axiosClient";
+import { supabaseClient } from "../utils/supabase";
 
 const options = [
     {
@@ -72,6 +74,22 @@ export default function CreatePost() {
     const onSubmit = async (e) => {
         e.preventDefault();
         console.log(selectedOption);
+        const requestBody = {
+            ...selectedOption,
+            id: uuidv4(),
+            currentLocation: selectedOption.currentLocation.value,
+            category: selectedOption.category.value,
+        };
+        console.log(requestBody);
+        const { data, error } = await supabaseClient.auth.getSession();
+        console.log(data.session.access_token);
+        const response = await axiosClient.post("http://localhost:8080/api/posts", requestBody, {
+            headers: {
+                Authorization: `Bearer ${data.session.access_token}`,
+            },
+        });
+
+        console.log(response);
     };
 
     return (
