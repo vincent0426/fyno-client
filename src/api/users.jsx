@@ -4,7 +4,7 @@ export const addUser = async (user) => {
     const response = await axiosClient.post("/api/users", {
         id: user.id,
         email: user.email,
-        name: user.email,
+        name: user.name,
         avatar_url: user.avatar_url,
     });
 

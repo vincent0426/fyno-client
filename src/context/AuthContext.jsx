@@ -37,7 +37,6 @@ export function AuthProvider({ children }) {
         const checkUser = async () => {
             try {
                 const { data: { user } } = await supabaseClient.auth.getUser();
-                console.log(user);
 
                 if (user) {
                     const isUserInDB = await axiosClient.get(`/api/users/${user.id}`);
@@ -47,8 +46,8 @@ export function AuthProvider({ children }) {
                         await addUser({
                             id: user.id,
                             email: user.email,
-                            name: user.email,
-                            avatar_url: import.meta.env.VITE_DEFAULT_AVATAR,
+                            name: user.user_metadata.full_name || user.email,
+                            avatar_url: user.user_metadata.avatar_url || import.meta.env.VITE_DEFAULT_AVATAR,
                         });
                     }
 
