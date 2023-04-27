@@ -22,7 +22,8 @@ export default function CreatePost() {
     const [selectedOption, setSelectedOption] = useState({
         kind: "",
         name: "",
-        currentLocation: "",
+        location: null,
+        category: null,
         gender: "",
         age: "",
         content: "",
@@ -77,8 +78,8 @@ export default function CreatePost() {
         const requestBody = {
             ...selectedOption,
             id: uuidv4(),
-            currentLocation: selectedOption.currentLocation.value,
-            category: selectedOption.category.value,
+            location_id: selectedOption.location.value,
+            category_id: selectedOption.category.value,
         };
         console.log(requestBody);
         const { data, error } = await supabaseClient.auth.getSession();
@@ -89,7 +90,11 @@ export default function CreatePost() {
             },
         });
 
-        console.log(response);
+        // TODO: navigate to /posts/:id
+        if (response.status === 201) {
+            console.log(response.data.postID);
+            console.log("success");
+        }
     };
 
     return (
@@ -153,13 +158,13 @@ export default function CreatePost() {
                                     name="current-location"
                                     options={locations}
                                     placeholder="Select current location"
-                                    value={selectedOption.currentLocation}
+                                    value={selectedOption.location}
                                     onChange={(e) => onChange(
                                         {
                                             value: e.value,
                                             label: e.label,
                                         },
-                                        "currentLocation",
+                                        "location",
                                     )}
                                 />
                             </div>
