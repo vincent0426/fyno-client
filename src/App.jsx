@@ -2,13 +2,14 @@ import "./index.css";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import WebSocketComponent from "./components/WebSocket";
 import { AuthProvider } from "./context/AuthContext";
 import Header from "./layouts/Header";
 import Auth from "./pages/Auth";
+import Chat from "./pages/Chat";
 import CreatePost from "./pages/CreatePost";
 import Hero from "./pages/Hero";
 import Posts from "./pages/Posts";
+import Profile from "./pages/Profile";
 import { compose } from "./utils/utils";
 
 function App() {
@@ -20,9 +21,10 @@ function App() {
                     <Route element={<Header />}>
                         <Route element={<Hero />} path="/" />
                         <Route element={<Auth />} path="/auth" />
+                        <Route element={<Profile />} path="/profile/:username" />
                         <Route element={<CreatePost />} path="/create-post" />
                         <Route element={<Posts />} path="/posts" />
-                        <Route element={<WebSocketComponent />} path="/ws/:username" />
+                        <Route element={<Chat />} path="/chat" />
                     </Route>
                 </Routes>
             </Provider>

@@ -23,8 +23,8 @@ const navigation = [
         href: "#",
     },
     {
-        name: "Marketplace",
-        href: "#",
+        name: "Chat",
+        href: "/chat",
     },
     {
         name: "Company",
