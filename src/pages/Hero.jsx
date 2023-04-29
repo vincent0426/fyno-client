@@ -64,10 +64,8 @@ export default function Hero() {
                         <div className="mx-auto max-w-7xl px-6 pt-20">
                             <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                                 <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
-                                    <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                                        Find your next
-                                        {" "}
-                                        <span className="text-indigo-600">owner</span>
+                                    <h1 className="bg-gradient-to-r from-purple-500 to-sky-500 bg-clip-text py-2 text-4xl font-extrabold text-transparent sm:text-5xl md:text-6xl">
+                                        Find your next owner
                                     </h1>
                                     <p className="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
                                         Our mission is to help pets find their forever homes, and we do so by creating a
