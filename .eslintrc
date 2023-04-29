@@ -11,6 +11,8 @@
     },
     "plugins": ["react", "react-hooks", "simple-import-sort", "tailwindcss"],
     "rules": {
+        "no-param-reassign": "off",
+        "no-nested-ternary": "off",
         "import/no-extraneous-dependencies": "off",
         "react/prop-types": "off",
         "no-shadow": "off",
