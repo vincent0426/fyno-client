@@ -7,9 +7,7 @@ import ImageUploading from "react-images-uploading";
 import { Carousel } from "react-responsive-carousel";
 import { v4 as uuidv4 } from "uuid";
 
-function App() {
-    const [images, setImages] = useState([]);
-
+function ImageUploader({ images, setImages }) {
     const onChange = (imageList) => {
     // set uploaded images
         console.log(imageList);
@@ -79,4 +77,4 @@ function App() {
     );
 }
 
-export default App;
+export default ImageUploader;
