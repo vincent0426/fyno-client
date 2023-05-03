@@ -27,8 +27,8 @@ function App() {
             >
                 {({ onImageUpload, onImageRemoveAll, imageList, onImageUpdate, onImageRemove }) => (
                     <>
-                        <div className="mx-auto flex h-[400px] w-[360px] items-center justify-center border">
-                            <div className="m-10 h-full w-full">
+                        <div className="mx-auto flex h-[400px] w-[360px] items-center justify-center border  mt-10">
+                            <div className="m-10 h-full w-full bg-white">
                                 {imageList.length === 0 && (
                                     <p className="flex h-full w-full items-center justify-center text-gray-400">
                                         Upload images
@@ -58,18 +58,20 @@ function App() {
                         </div>
                         <div className="mt-16 flex justify-center">
                             <button
-                                className="mr-4 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                                className="w-3.3/12 mr-2 rounded-md bg-blue-500 px-4 py-2 text-white 
+                                transition duration-500 hover:scale-110 hover:bg-cyan-500"
                                 type="button"
                                 onClick={onImageUpload}
                             >
                                 Upload Images
                             </button>
                             <button
-                                className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                                className="w-3.3/12 ml-2 rounded-md bg-red-500 px-4 py-2 text-white 
+                                transition duration-500 hover:scale-110 hover:bg-rose-400"
                                 type="button"
                                 onClick={onImageRemoveAll}
                             >
-                                Remove All Images
+                                Remove Images
                             </button>
                         </div>
                     </>
