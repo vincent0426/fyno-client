@@ -8,7 +8,7 @@ function WebSocketComponent({ rid, rname }) {
     const [messageHistory, setMessageHistory] = useState([]);
     // const { username } = useParams();
     const { user } = useAuth();
-    console.log(user);
+    console.log("rid", rid);
     const webSocketRef = useRef(null);
     const messageEndRef = useRef(null);
 
@@ -16,7 +16,6 @@ function WebSocketComponent({ rid, rname }) {
         // Update only if receiver is the current user
         // transform the message into a JSON object
         const parsedMessage = JSON.parse(event.data);
-        console.log("Received message: ", parsedMessage);
 
         if ((parsedMessage.sender === user.id && parsedMessage.receiver === rid)
             || (parsedMessage.sender === rid && parsedMessage.receiver === user.id)) {
@@ -51,7 +50,7 @@ function WebSocketComponent({ rid, rname }) {
     };
 
     const handleSendMessage = (content) => {
-        console.log(`Sending message to ${rname}: ${content}`);
+        console.log(`Sending message to ${rid}: ${content}`);
         console.log("user", user);
         const message = {
             id: uuidv4(),

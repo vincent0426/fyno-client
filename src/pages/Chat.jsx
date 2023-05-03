@@ -10,17 +10,18 @@ function ChatPage() {
     const [selectedReceiver, setSelectedReceiver] = useState(null);
     const [messageUsers, setMessageUsers] = useState(null);
 
-    const handleReceiverChange = (event) => {
-        setSelectedReceiver(event.target.value);
+    const handleReceiverChange = (id) => {
+        console.log("id", id);
+        setSelectedReceiver(id);
     };
 
     useEffect(() => {
         console.log("chat page");
 
-        const getMessageUsers = async () => {
+        const getMessageUserGroups = async () => {
             try {
-                const { data } = await axiosClient.get("/api/message/users");
-                console.log("message users", data);
+                const { data } = await axiosClient.get("/api/message/user_groups");
+                console.log("message user groups", data);
                 setMessageUsers(data);
                 setSelectedReceiver(data[0].id);
             } catch (error) {
@@ -28,7 +29,7 @@ function ChatPage() {
             }
         };
 
-        getMessageUsers();
+        getMessageUserGroups();
     }, []);
 
     return (
@@ -45,7 +46,7 @@ function ChatPage() {
                                         selectedReceiver === messageUser.id ? "bg-gray-300" : "bg-white",
                                     )}
                                     type="button"
-                                    onClick={handleReceiverChange}
+                                    onClick={() => handleReceiverChange(messageUser.id)}
                                 >
                                     {messageUser.name}
                                 </button>
