@@ -17,6 +17,7 @@ function ProfileDropdown({ user, logout }) {
                 <img
                     alt=""
                     className="h-8 w-8 rounded-full"
+                    referrerPolicy="no-referrer"
                     src={user.avatar_url}
                 />
                 <span className="sr-only">Open user menu</span>
