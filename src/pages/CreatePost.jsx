@@ -1,59 +1,16 @@
 import axios from "axios";
-import { decode as atob, encode as btoa } from "base-64";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { v4 as uuidv4 } from "uuid";
 
 import { getPresignedUrl } from "../api/s3";
 import ImageUploader from "../components/ImageUploader/ImageUploader";
+import { useAuth } from "../hooks/useAuth";
 import axiosClient from "../utils/axiosClient";
-
-const options = [
-    {
-        value: "qjwesdlmclmlsedw", label: "Chocolate",
-    },
-    {
-        value: "wejxmss;;medq", label: "Strawberry",
-    },
-    {
-        value: "axcpakme;dmwq;", label: "Vanilla",
-    },
-];
-
-function b64toBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || "";
-    sliceSize = sliceSize || 512;
-
-    const byteCharacters = atob(b64Data);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        const byteNumbers = new Array(slice.length);
-
-        for (let i = 0; i < slice.length; i += 1) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        const byteArray = new Uint8Array(byteNumbers);
-
-        byteArrays.push(byteArray);
-    }
-
-    const blob = new Blob(byteArrays, {
-        type: contentType,
-    });
-    return blob;
-}
-
-const blobToFile = (theBlob, fileName) => {
-    theBlob.lastModifiedDate = new Date();
-    theBlob.name = fileName;
-    return theBlob;
-};
+import { b64toBlob, blobToFile } from "../utils/format-base64";
 
 export default function CreatePost() {
+    const { user } = useAuth();
     const [selectedOption, setSelectedOption] = useState({
         kind: "",
         name: "",
@@ -115,47 +72,59 @@ export default function CreatePost() {
         const postId = uuidv4();
         console.log("submit", postId);
 
+        const postImages = [];
+
         // upload images to S3
-        if (images.length > 0) {
+        if (images) {
+            for (let i = 0; i < images.length; i += 1) {
+                // generate object with image url and post id
+                const key = `${postId}/${i + 1}`;
+                postImages.push({
+                    url: `https://fyno-post-images.s3.ap-northeast-1.amazonaws.com/${user.id}/${key}`,
+                    rank: i + 1,
+                });
+            }
+
             images.forEach(async (image, index) => {
-                const key = `${postId}/${index}`;
+                const key = `${postId}/${index + 1}`;
                 console.log(key);
                 const { data } = await getPresignedUrl(key);
                 const presignedURL = data.url;
                 console.log(presignedURL);
 
-                const configBlop = {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                };
                 const base64 = image.dataURL.split(",")[1];
                 const type = image.dataURL.split(";")[0].split("/")[1];
                 const filename = image.file.name;
                 const blob = b64toBlob(base64, `image/${type}`);
                 const file = blobToFile(blob, filename);
-                const response = await axios.put(presignedURL, file, configBlop);
-                console.log(response);
+                // Only uncomment this line if you want to upload images to S3
+                // const response = await axios.put(presignedURL, file);
             });
         }
 
-        // console.log(selectedOption);
-        // const requestBody = {
-        //     ...selectedOption,
-        //     id: uuidv4(),
-        //     location_id: selectedOption.location.value,
-        //     category_id: selectedOption.category.value,
-        // };
-        // console.log(requestBody);
-        // const { data, error } = await supabaseClient.auth.getSession();
-        // console.log(data.session.access_token);
-        // const response = await axiosClient.post("http://localhost:8080/api/posts", requestBody, {
-        //     headers: {
-        //         Authorization: `Bearer ${data.session.access_token}`,
-        //     },
-        // });
-
-        // // TODO: navigate to /posts/:id
+        // console.log(postImages);
+        const tempPostImages = [
+            {
+                url: `https://fyno-post-images.s3.ap-northeast-1.amazonaws.com/2f5c4a5a-f186-4057-af3f-e04876e14a11/${postId}/0`,
+                rank: 1,
+            },
+            {
+                url: `https://fyno-post-images.s3.ap-northeast-1.amazonaws.com/2f5c4a5a-f186-4057-af3f-e04876e14a11/${postId}/1`,
+                rank: 2,
+            },
+        ];
+        console.log(selectedOption);
+        const requestBody = {
+            ...selectedOption,
+            id: postId,
+            location_id: selectedOption.location.value,
+            category_id: selectedOption.category.value,
+            post_images: tempPostImages,
+        };
+        console.log(requestBody);
+        const response = await axiosClient.post("http://localhost:8080/api/posts", requestBody);
+        console.log(response);
+        // TODO: navigate to /posts/:id
         // if (response.status === 201) {
         //     console.log(response.data.postID);
         //     console.log("success");
