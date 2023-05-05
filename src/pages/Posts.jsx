@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+
+import axiosClient from "../utils/axiosClient";
+
 const posts = [
     {
         id: 1,
@@ -39,7 +43,22 @@ const posts = [
     },
 ];
 
-export default function Example() {
+export default function Posts() {
+    useEffect(() => {
+        console.log("posts page");
+
+        const getPosts = async () => {
+            try {
+                const { data } = await axiosClient.get("/api/posts");
+                console.log("data", data);
+            } catch (error) {
+                console.log("error", error);
+            }
+        };
+
+        getPosts();
+    }, []);
+
     return (
         <div className="bg-white py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">

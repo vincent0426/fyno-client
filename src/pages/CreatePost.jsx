@@ -14,8 +14,8 @@ export default function CreatePost() {
     const [selectedOption, setSelectedOption] = useState({
         kind: "",
         name: "",
-        location: null,
-        category: null,
+        location: "",
+        category: "",
         gender: "",
         age: "",
         content: "",
@@ -103,6 +103,8 @@ export default function CreatePost() {
             },
         ];
         console.log(selectedOption);
+        console.log(selectedOption.category.value);
+        console.log(selectedOption.location.value);
         const requestBody = {
             id: postId,
             age: selectedOption.age,
@@ -110,8 +112,12 @@ export default function CreatePost() {
             gender: selectedOption.gender,
             kind: selectedOption.kind,
             name: selectedOption.name,
-            location_id: selectedOption.location.value,
-            category_id: selectedOption.category.value,
+            location: {
+                id: selectedOption.location.value,
+            },
+            category: {
+                id: selectedOption.category.value,
+            },
             post_images: tempPostImages,
         };
         console.log(requestBody);
