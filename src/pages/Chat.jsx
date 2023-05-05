@@ -20,7 +20,7 @@ function ChatPage() {
 
         const getMessageUserGroups = async () => {
             try {
-                const { data } = await axiosClient.get("/api/message/user_groups");
+                const { data } = await axiosClient.get("/api/messages/user_groups");
                 console.log("message user groups", data);
                 setMessageUsers(data);
                 setSelectedReceiver(data[0].id);

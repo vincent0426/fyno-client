@@ -28,7 +28,7 @@ function Profile() {
     }, []);
 
     const onMessageClick = async () => {
-        const response = await axiosClient.post("/api/message/user_groups", {
+        const response = await axiosClient.post("/api/messages/user_groups", {
             message_partner_id: user.id,
         });
 
