@@ -7,7 +7,7 @@ import { getPresignedUrl } from "../api/s3";
 import ImageUploader from "../components/ImageUploader/ImageUploader";
 import { useAuth } from "../hooks/useAuth";
 import axiosClient from "../utils/axiosClient";
-import { b64toBlob, blobToFile } from "../utils/format-base64";
+import { generateFile, generatePostImages } from "../utils/post";
 
 export default function CreatePost() {
     const { user } = useAuth();
@@ -72,33 +72,22 @@ export default function CreatePost() {
         const postId = uuidv4();
         console.log("submit", postId);
 
-        const postImages = [];
+        let postImages = [];
 
-        // upload images to S3
+        // If there are images, upload them to S3
         if (images) {
-            for (let i = 0; i < images.length; i += 1) {
-                // generate object with image url and post id
-                const key = `${postId}/${i + 1}`;
-                postImages.push({
-                    url: `https://fyno-post-images.s3.ap-northeast-1.amazonaws.com/${user.id}/${key}`,
-                    rank: i + 1,
-                });
-            }
+            // Generate object with image url and rank
+            postImages = generatePostImages(postImages, images, postId, user);
 
             images.forEach(async (image, index) => {
+                // Generate presigned URL
                 const key = `${postId}/${index + 1}`;
-                console.log(key);
-                const { data } = await getPresignedUrl(key);
-                const presignedURL = data.url;
-                console.log(presignedURL);
-
-                const base64 = image.dataURL.split(",")[1];
-                const type = image.dataURL.split(";")[0].split("/")[1];
-                const filename = image.file.name;
-                const blob = b64toBlob(base64, `image/${type}`);
-                const file = blobToFile(blob, filename);
+                const { data: { url: presignedURL } } = await getPresignedUrl(key);
+                console.log(`index: ${index}, presignedURL: ${presignedURL}`);
                 // Only uncomment this line if you want to upload images to S3
+                const file = generateFile(image);
                 // const response = await axios.put(presignedURL, file);
+                // console.log(response);
             });
         }
 
@@ -115,8 +104,12 @@ export default function CreatePost() {
         ];
         console.log(selectedOption);
         const requestBody = {
-            ...selectedOption,
             id: postId,
+            age: selectedOption.age,
+            content: selectedOption.content,
+            gender: selectedOption.gender,
+            kind: selectedOption.kind,
+            name: selectedOption.name,
             location_id: selectedOption.location.value,
             category_id: selectedOption.category.value,
             post_images: tempPostImages,
