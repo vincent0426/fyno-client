@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import axiosClient from "../utils/axiosClient";
 
@@ -44,12 +44,14 @@ const posts = [
 ];
 
 export default function Posts() {
+    const [posts, setPosts] = useState(null);
     useEffect(() => {
         console.log("posts page");
 
         const getPosts = async () => {
             try {
                 const { data } = await axiosClient.get("/api/posts");
+                setPosts(data.posts);
                 console.log("data", data);
             } catch (error) {
                 console.log("error", error);
@@ -68,9 +70,12 @@ export default function Posts() {
                         Learn how to grow your business with our expert advice.
                     </p>
                     <div className="mt-10 space-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16">
-                        {posts.map((post) => (
-                            <article key={post.id} className="flex max-w-xl flex-col items-start justify-between">
-                                <div className="flex items-center gap-x-4 text-xs">
+                        {posts && posts.map((post) => (
+                            <article key={post.id} className="flex max-w-xl flex-col items-start justify-between rounded-xl p-6 sm:flex-row sm:space-x-6">
+                                <a className="inline-block" href={`/posts/${post.id}`}>
+                                    {post.name}
+                                </a>
+                                {/* <div className="flex items-center gap-x-4 text-xs">
                                     <time className="text-gray-500" dateTime={post.datetime}>
                                         {post.date}
                                     </time>
@@ -101,7 +106,7 @@ export default function Posts() {
                                         </p>
                                         <p className="text-gray-600">{post.author.role}</p>
                                     </div>
-                                </div>
+                                </div> */}
                             </article>
                         ))}
                     </div>
