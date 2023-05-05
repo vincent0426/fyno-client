@@ -4,19 +4,16 @@ import { supabaseClient } from "./supabase";
 
 const axiosClient = axios.create({
     baseURL: "http://localhost:8080",
-    withCredentials: true,
 });
 
-const getAccessToken = async () => {
-    console.log("getAccessToken");
-    // set the auth header on every request
+axiosClient.interceptors.request.use(async (config) => {
     const { data, error } = await supabaseClient.auth.getSession();
-    console.log(data);
 
-    if (data) {
-        axiosClient.defaults.headers.common.Authorization = `Bearer ${data.access_token}`;
+    if (data && data.session && data.session.access_token) {
+        config.headers.Authorization = `Bearer ${data.session.access_token}`;
     }
-};
 
-getAccessToken();
+    return config;
+});
+
 export default axiosClient;

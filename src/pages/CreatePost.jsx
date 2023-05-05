@@ -1,29 +1,21 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { v4 as uuidv4 } from "uuid";
 
+import { getPresignedUrl } from "../api/s3";
 import ImageUploader from "../components/ImageUploader/ImageUploader";
+import { useAuth } from "../hooks/useAuth";
 import axiosClient from "../utils/axiosClient";
-import { supabaseClient } from "../utils/supabase";
-
-const options = [
-    {
-        value: "qjwesdlmclmlsedw", label: "Chocolate",
-    },
-    {
-        value: "wejxmss;;medq", label: "Strawberry",
-    },
-    {
-        value: "axcpakme;dmwq;", label: "Vanilla",
-    },
-];
+import { generateFile, generatePostImages } from "../utils/post";
 
 export default function CreatePost() {
+    const { user } = useAuth();
     const [selectedOption, setSelectedOption] = useState({
         kind: "",
         name: "",
-        location: null,
-        category: null,
+        location: "",
+        category: "",
         gender: "",
         age: "",
         content: "",
@@ -31,6 +23,8 @@ export default function CreatePost() {
 
     const [locations, setLocations] = useState([]);
     const [categories, setCategories] = useState([]);
+
+    const [images, setImages] = useState(null);
 
     useEffect(() => {
         const getLocations = async () => {
@@ -74,38 +68,78 @@ export default function CreatePost() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        // Generate a unique ID for each post
+        const postId = uuidv4();
+        console.log("submit", postId);
+
+        let postImages = [];
+
+        // If there are images, upload them to S3
+        if (images) {
+            // Generate object with image url and rank
+            postImages = generatePostImages(postImages, images, postId, user);
+
+            images.forEach(async (image, index) => {
+                // Generate presigned URL
+                const key = `${postId}/${index + 1}`;
+                const { data: { url: presignedURL } } = await getPresignedUrl(key);
+                console.log(`index: ${index}, presignedURL: ${presignedURL}`);
+                // Only uncomment this line if you want to upload images to S3
+                const file = generateFile(image);
+                // const response = await axios.put(presignedURL, file);
+                // console.log(response);
+            });
+        }
+
+        // console.log(postImages);
+        const tempPostImages = [
+            {
+                url: `https://fyno-post-images.s3.ap-northeast-1.amazonaws.com/2f5c4a5a-f186-4057-af3f-e04876e14a11/${postId}/0`,
+                rank: 1,
+            },
+            {
+                url: `https://fyno-post-images.s3.ap-northeast-1.amazonaws.com/2f5c4a5a-f186-4057-af3f-e04876e14a11/${postId}/1`,
+                rank: 2,
+            },
+        ];
         console.log(selectedOption);
+        console.log(selectedOption.category.value);
+        console.log(selectedOption.location.value);
         const requestBody = {
-            ...selectedOption,
-            id: uuidv4(),
-            location_id: selectedOption.location.value,
-            category_id: selectedOption.category.value,
+            id: postId,
+            age: selectedOption.age,
+            content: selectedOption.content,
+            gender: selectedOption.gender,
+            kind: selectedOption.kind,
+            name: selectedOption.name,
+            location: {
+                id: selectedOption.location.value,
+            },
+            category: {
+                id: selectedOption.category.value,
+            },
+            post_images: tempPostImages,
         };
         console.log(requestBody);
-        const { data, error } = await supabaseClient.auth.getSession();
-        console.log(data.session.access_token);
-        const response = await axiosClient.post("http://localhost:8080/api/posts", requestBody, {
-            headers: {
-                Authorization: `Bearer ${data.session.access_token}`,
-            },
-        });
-
+        const response = await axiosClient.post("http://localhost:8080/api/posts", requestBody);
+        console.log(response);
         // TODO: navigate to /posts/:id
-        if (response.status === 201) {
-            console.log(response.data.postID);
-            console.log("success");
-        }
+        // if (response.status === 201) {
+        //     console.log(response.data.postID);
+        //     console.log("success");
+        // }
     };
 
     return (
-        <div className="mx-auto flex max-w-5xl h-5/6
-                bg-gradient-to-br from-violet-200 to-emerald-50">
+        <div className="mx-auto flex h-5/6 max-w-5xl
+                bg-gradient-to-br from-violet-200 to-emerald-50"
+        >
             <div className="w-1/2">
-                <ImageUploader />
+                <ImageUploader images={images} setImages={setImages} />
             </div>
-            <div className="mx-auto w-1/2 max-w-md px-4 sm:px-6 lg:px-8 border-2 border-l-indigo-500">
+            <div className="mx-auto w-1/2 max-w-md border-2 border-l-indigo-500 px-4 sm:px-6 lg:px-8">
                 <div className="py-3">
-                    <form >
+                    <form>
                         <div className="border-gray-900/10">
                             <div className="space-y-6">
                                 <div className="flex items-center gap-6 sm:col-span-6">
@@ -133,8 +167,8 @@ export default function CreatePost() {
                                         Kind:
                                     </label>
                                     <input
-                                        className="block flex-1  py-1.5 rounded-md
-                                         text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6 bg-white"
+                                        className="block flex-1  rounded-md bg-white
+                                         py-1.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
                                         value={selectedOption.kind}
                                         onChange={(e) => onChange(e.target.value, "kind")}
                                     />
@@ -144,8 +178,8 @@ export default function CreatePost() {
                                         Name:
                                     </label>
                                     <input
-                                        className="block flex-1  py-1.5 rounded-md
-                                        text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6 bg-white"
+                                        className="block flex-1  rounded-md bg-white
+                                        py-1.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
                                         value={selectedOption.name}
                                         onChange={(e) => onChange(e.target.value, "name")}
                                     />
@@ -237,8 +271,8 @@ export default function CreatePost() {
                                         Age:
                                     </label>
                                     <input
-                                        className="block flex-1  py-1.5 rounded-md
-                                        text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6 bg-white"
+                                        className="block flex-1  rounded-md bg-white
+                                        py-1.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
                                         id="age"
                                         max="100"
                                         min="0"
@@ -254,7 +288,7 @@ export default function CreatePost() {
                                         Content:
                                     </label>
                                     <textarea
-                                        className="w-full resize-none rounded-md  py-1.5 pl-1  text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6 bg-white"
+                                        className="w-full resize-none rounded-md  bg-white py-1.5  pl-1 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
                                         id="content"
                                         name="content"
                                         rows="6"

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import CircleLoader from "react-spinners/CircleLoader";
 
+import Logo from "../assets/logo.png";
 import ProfileDropdown from "../components/Header/ProfileDropdown";
 import { useAuth } from "../hooks/useAuth";
 import { useLogout } from "../hooks/useLogout";
@@ -23,8 +24,8 @@ const navigation = [
         href: "#",
     },
     {
-        name: "Marketplace",
-        href: "#",
+        name: "Chat",
+        href: "/chat",
     },
     {
         name: "Company",
@@ -51,8 +52,8 @@ export default function Header() {
                                 <span className="sr-only">Your Company</span>
                                 <img
                                     alt=""
-                                    className="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                                    className="h-12 w-auto"
+                                    src={Logo}
                                 />
                             </a>
                         </div>
@@ -116,8 +117,8 @@ export default function Header() {
                                     <span className="sr-only">Your Company</span>
                                     <img
                                         alt=""
-                                        className="h-8 w-auto"
-                                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                                        className="h-12 w-auto"
+                                        src={Logo}
                                     />
                                 </a>
                                 <button

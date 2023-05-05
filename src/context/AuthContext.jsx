@@ -35,15 +35,18 @@ export function AuthProvider({ children }) {
         console.log("auth provider");
 
         const checkUser = async () => {
+            console.log("check user");
+
             try {
                 const { data: { user } } = await supabaseClient.auth.getUser();
+                let userInDB = null;
 
                 if (user) {
-                    const isUserInDB = await axiosClient.get(`/api/users/${user.id}`);
+                    userInDB = await getUser(user.id);
 
-                    if (!isUserInDB.data.data) {
+                    if (!userInDB.data.user) {
                         console.log("user not in db", user);
-                        await addUser({
+                        userInDB = await addUser({
                             id: user.id,
                             email: user.email,
                             name: user.user_metadata.full_name || user.email,
@@ -51,12 +54,11 @@ export function AuthProvider({ children }) {
                         });
                     }
 
-                    const { data } = await getUser(user.id);
+                    const { data } = userInDB;
 
-                    console.log(data);
                     dispatch({
                         type: "LOGIN",
-                        payload: data.data,
+                        payload: data.user,
                     });
                 } else {
                     dispatch({
