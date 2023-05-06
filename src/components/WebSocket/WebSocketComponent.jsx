@@ -89,7 +89,7 @@ function WebSocketComponent({ rid, rname }) {
     }, [messageHistory]);
 
     return (
-        <div className="container mx-auto my-4">
+        <div className="container mx-auto py-4 border-2">
             <div className="mx-auto max-w-lg">
                 {messageHistory.map((message, index) => (
                     <div key={message.id} className="my-2 flex justify-between">
