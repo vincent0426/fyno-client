@@ -1,13 +1,7 @@
 # FYNO Client
 
-1. Clone the repo
-```sh
-git clone https://github.com/vincent0426/fyno-client.git
-```
+1. Fork the repo
 2. Go into the repo
-```sh
-cd fyno-client
-```
 3. Install dependencies
 ```sh
 yarn install
