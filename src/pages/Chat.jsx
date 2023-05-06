@@ -33,10 +33,14 @@ function ChatPage() {
     }, []);
 
     return (
-        <div className="container mx-auto my-4">
-            <div className="mx-auto flex max-w-4xl">
-                <div className="w-1/4">
-                    <h1 className="mb-4 text-2xl font-bold">Receivers</h1>
+        <>
+        <div className="h-screen w-screen bg-[url('https://source.unsplash.com/OTy0mkqc2Yk')] bg-no-repeat bg-cover bg-center bg-fixed -z-50 top-0 right-0  absolute"></div>
+        <div className="h-screen w-screen bg-[url('https://source.unsplash.com/OTy0mkqc2Yk')] bg-no-repeat bg-cover bg-center bg-fixed -z-50 top-0 left-0   absolute"></div>
+        <div className="container relative h-[660px] w-screen">
+            <div className="flex flex-row ml-32 mr-20 w-full h-full backdrop-blur-sm">
+
+                <div className="mx-auto flex flex-col w-56 border-2 border-r-0">
+                    <div className="mb-4 text-2xl font-bold pt-2 pl-2">Receivers</div>
                     <ul>
                         {messageUsers && messageUsers.map((messageUser) => (
                             <li key={messageUser.id}>
@@ -52,82 +56,15 @@ function ChatPage() {
                                 </button>
                             </li>
                         ))}
-                        {/* <li>
-                            <button
-                                className={`w-full px-4 py-2 text-left ${
-                                    selectedReceiver === "375241f7-8d90-4ee8-a2ee-9b0ff23583d5"
-                                        ? "bg-gray-300"
-                                        : "bg-white"
-                                }`}
-                                type="button"
-                                onClick={() => setSelectedReceiver("375241f7-8d90-4ee8-a2ee-9b0ff23583d5")}
-                            >
-                                謝
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                className={`w-full px-4 py-2 text-left ${
-                                    selectedReceiver === "2f5c4a5a-f186-4057-af3f-e04876e14a11"
-                                        ? "bg-gray-300"
-                                        : "bg-white"
-                                }`}
-                                type="button"
-                                onClick={() => setSelectedReceiver("2f5c4a5a-f186-4057-af3f-e04876e14a11")}
-                            >
-                                Vincent Hsiseh
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                className={`w-full px-4 py-2 text-left ${
-                                    selectedReceiver === "123"
-                                        ? "bg-gray-300"
-                                        : "bg-white"
-                                }`}
-                                type="button"
-                                onClick={() => setSelectedReceiver("123")}
-                            >
-                                123
-                            </button>
-                        </li> */}
                     </ul>
                 </div>
-                {/* <div className="w-3/4 px-4">
-                    <h1 className="mb-4 text-2xl font-bold">
-                        {selectedRecipient === "recipient-1"
-                            ? "Recipient 1"
-                            : selectedRecipient === "recipient-2"
-                                ? "Recipient 2"
-                                : "Recipient 3"}
-                    </h1>
-                    <ChatBox recipient={selectedRecipient} />
-                    <form
-                        className="flex justify-between"
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            handleSendMessage(selectedRecipient, e.target.content.value);
-                            e.target.reset();
-                        }}
-                    >
-                        <input
-                            className="mr-2 w-2/3 rounded border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-                            id="content"
-                            placeholder="Message"
-                            type="text"
-                        />
-                        <button
-                            className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
-                            type="submit"
-                        >
-                            Send
-                        </button>
-                    </form>
-                </div> */}
+                <WebSocketComponent rid={selectedReceiver} rname="recipient-1" />
+
             </div>
-            <WebSocketComponent rid={selectedReceiver} rname="recipient-1" />
         </div>
+        </>
     );
+    
 }
 
 export default ChatPage;
