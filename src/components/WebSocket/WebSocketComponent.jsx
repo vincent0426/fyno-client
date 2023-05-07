@@ -107,11 +107,19 @@ function WebSocketComponent({ rid }) {
                 <div className="mx-auto max-w-lg">
                     {messageHistory.map((message, index) => (
                         <div key={message.id} className="my-2 flex justify-between">
-                            <div className="font-bold">
-                                <img alt="" src={groupUser.avatar_url} />
-                                {groupUser.name}
-                                :
-                            </div>
+                            {message.sender === user.id ? (
+                                <div className="font-bold">
+                                    <img alt="" src={user.avatar_url} />
+                                    {user.name}
+                                    :
+                                </div>
+                            ) : (
+                                <div className="font-bold">
+                                    <img alt="" src={groupUser.avatar_url} />
+                                    {groupUser.name}
+                                    :
+                                </div>
+                            )}
                             <div>{message.content}</div>
                         </div>
                     ))}
