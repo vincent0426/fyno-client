@@ -2,15 +2,28 @@ import Cookies from "js-cookie";
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { getUser } from "../../api/users";
 import { useAuth } from "../../hooks/useAuth";
 
-function WebSocketComponent({ rid, rname }) {
+function WebSocketComponent({ rid }) {
     const [messageHistory, setMessageHistory] = useState([]);
+    const [groupUser, setGroupUser] = useState(null);
     // const { username } = useParams();
+    console.log(messageHistory);
     const { user } = useAuth();
-    console.log("rid", rid);
     const webSocketRef = useRef(null);
     const messageEndRef = useRef(null);
+    useEffect(() => {
+        console.log("WebSocketComponent", rid);
+
+        const getGroupUser = async (id) => {
+            if (!id) return;
+            const { data: { user } } = await getUser(id);
+            setGroupUser(user);
+        };
+
+        getGroupUser(rid);
+    }, [rid]);
 
     const handleIncomingMessage = (event) => {
         // Update only if receiver is the current user
@@ -89,40 +102,43 @@ function WebSocketComponent({ rid, rname }) {
     }, [messageHistory]);
 
     return (
-        <div className="container mx-auto py-4 border-2">
-            <div className="mx-auto max-w-lg">
-                {messageHistory.map((message, index) => (
-                    <div key={message.id} className="my-2 flex justify-between">
-                        <div className="font-bold">
-                            {message.sender}
-                            :
+        <div className="container mx-auto my-4">
+            {groupUser && (
+                <div className="mx-auto max-w-lg">
+                    {messageHistory.map((message, index) => (
+                        <div key={message.id} className="my-2 flex justify-between">
+                            <div className="font-bold">
+                                <img alt="" src={groupUser.avatar_url} />
+                                {groupUser.name}
+                                :
+                            </div>
+                            <div>{message.content}</div>
                         </div>
-                        <div>{message.content}</div>
-                    </div>
-                ))}
-                <div ref={messageEndRef} />
-                <form
-                    className="flex justify-between"
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        handleSendMessage(e.target.content.value);
-                        e.target.reset();
-                    }}
-                >
-                    <input
-                        className="mr-2 w-2/3 rounded border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-                        id="content"
-                        placeholder="Message"
-                        type="text"
-                    />
-                    <button
-                        className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
-                        type="submit"
+                    ))}
+                    <div ref={messageEndRef} />
+                    <form
+                        className="flex justify-between"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleSendMessage(e.target.content.value);
+                            e.target.reset();
+                        }}
                     >
-                        Send
-                    </button>
-                </form>
-            </div>
+                        <input
+                            className="mr-2 w-2/3 rounded border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
+                            id="content"
+                            placeholder="Message"
+                            type="text"
+                        />
+                        <button
+                            className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
+                            type="submit"
+                        >
+                            Send
+                        </button>
+                    </form>
+                </div>
+            )}
         </div>
     );
 }
