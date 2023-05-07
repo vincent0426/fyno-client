@@ -25,7 +25,7 @@ function ImageUploader({ images, setImages }) {
             >
                 {({ onImageUpload, onImageRemoveAll, imageList, onImageUpdate, onImageRemove }) => (
                     <>
-                        <div className="mx-auto flex h-[400px] w-[360px] items-center justify-center border  mt-10">
+                        <div className="mx-auto mt-10 flex h-[400px] w-[360px] items-center justify-center  border">
                             <div className="m-10 h-full w-full bg-white">
                                 {imageList.length === 0 && (
                                     <p className="flex h-full w-full items-center justify-center text-gray-400">
@@ -56,7 +56,7 @@ function ImageUploader({ images, setImages }) {
                         </div>
                         <div className="mt-16 flex justify-center">
                             <button
-                                className="w-3.3/12 mr-2 rounded-md bg-blue-500 px-4 py-2 text-white 
+                                className="w-3.3/12 mr-2 rounded-md bg-blue-500 px-4 py-2 text-white
                                 transition duration-500 hover:scale-110 hover:bg-cyan-500"
                                 type="button"
                                 onClick={onImageUpload}
@@ -64,7 +64,7 @@ function ImageUploader({ images, setImages }) {
                                 Upload Images
                             </button>
                             <button
-                                className="w-3.3/12 ml-2 rounded-md bg-red-500 px-4 py-2 text-white 
+                                className="w-3.3/12 ml-2 rounded-md bg-red-500 px-4 py-2 text-white
                                 transition duration-500 hover:scale-110 hover:bg-rose-400"
                                 type="button"
                                 onClick={onImageRemoveAll}
