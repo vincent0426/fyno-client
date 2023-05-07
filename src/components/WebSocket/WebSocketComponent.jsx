@@ -63,6 +63,7 @@ function WebSocketComponent({ rid }) {
     };
 
     const handleSendMessage = (content) => {
+        if (!content) return;
         console.log(`Sending message to ${rid}: ${content}`);
         console.log("user", user);
         const message = {
@@ -133,17 +134,35 @@ function WebSocketComponent({ rid }) {
                         }}
                     >
                         <input
-                            className="mr-2 w-2/3 rounded border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
+                            className="ml-4 mr-2 w-3/4 shrink rounded border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
                             id="content"
                             placeholder="Message"
                             type="text"
                         />
-                        <button
-                            className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
-                            type="submit"
-                        >
-                            Send
-                        </button>
+                        <div className="ml-4 flex flex-none items-center">
+                            <button
+                                className="flex shrink-0 items-center justify-center rounded-xl bg-indigo-500 px-4 py-1 text-white hover:bg-indigo-600"
+                                type="submit"
+                            >
+                                <span>Send</span>
+                                <span className="ml-2">
+                                    <svg
+                                        className="-mt-px h-4 w-4 rotate-45"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                        />
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
                     </form>
                 </div>
             )}
