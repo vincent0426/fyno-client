@@ -125,7 +125,7 @@ function ChatPage() {
                     </form>
                 </div> */}
             </div>
-            <WebSocketComponent rid={selectedReceiver} rname="recipient-1" />
+            <WebSocketComponent rid={selectedReceiver} />
         </div>
     );
 }
