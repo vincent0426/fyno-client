@@ -2,15 +2,28 @@ import Cookies from "js-cookie";
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { getUser } from "../../api/users";
 import { useAuth } from "../../hooks/useAuth";
 
-function WebSocketComponent({ rid, rname }) {
+function WebSocketComponent({ rid }) {
     const [messageHistory, setMessageHistory] = useState([]);
+    const [groupUser, setGroupUser] = useState(null);
     // const { username } = useParams();
+    console.log(messageHistory);
     const { user } = useAuth();
-    console.log("rid", rid);
     const webSocketRef = useRef(null);
     const messageEndRef = useRef(null);
+    useEffect(() => {
+        console.log("WebSocketComponent", rid);
+
+        const getGroupUser = async (id) => {
+            if (!id) return;
+            const { data: { user } } = await getUser(id);
+            setGroupUser(user);
+        };
+
+        getGroupUser(rid);
+    }, [rid]);
 
     const handleIncomingMessage = (event) => {
         // Update only if receiver is the current user
@@ -50,6 +63,7 @@ function WebSocketComponent({ rid, rname }) {
     };
 
     const handleSendMessage = (content) => {
+        if (!content) return;
         console.log(`Sending message to ${rid}: ${content}`);
         console.log("user", user);
         const message = {
@@ -89,83 +103,70 @@ function WebSocketComponent({ rid, rname }) {
     }, [messageHistory]);
 
     return (
-        <>
-        <div className="container mx-auto px-4 py-4 border-2 ">
-            <div className="mx-auto max-w-xl h-full relative rounded-lg ">
-                {messageHistory.map((message, index) => (
-                    <div key={message.id} className="my-2 flex justify-between">
-                        <div className="font-bold">
-                            {message.sender}
-                            :
+        <div className="container mx-auto my-4">
+            {groupUser && (
+                <div className="mx-auto max-w-lg">
+                    {messageHistory.map((message, index) => (
+                        <div key={message.id} className="my-2 flex justify-between">
+                            {message.sender === user.id ? (
+                                <div className="font-bold">
+                                    <img alt="" src={user.avatar_url} />
+                                    {user.name}
+                                    :
+                                </div>
+                            ) : (
+                                <div className="font-bold">
+                                    <img alt="" src={groupUser.avatar_url} />
+                                    {groupUser.name}
+                                    :
+                                </div>
+                            )}
+                            <div>{message.content}</div>
                         </div>
-                        <div>{message.content}</div>
-                    </div>
-                ))}
-                <div ref={messageEndRef} />
-
-                <div className="flex flex-row items-center rounded-xl w-full h-14 bg-zinc-200 px-4
-                                absolute bottom-0 left-0">
+                    ))}
+                    <div ref={messageEndRef} />
                     <form
-                        className="flex w-full"
+                        className="flex justify-between"
                         onSubmit={(e) => {
                             e.preventDefault();
                             handleSendMessage(e.target.content.value);
                             e.target.reset();
                         }}
                     >
-                        <button className="flex flex-none items-center justify-center text-gray-400 hover:text-gray-600">
-                            <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                            ></path>
-                            </svg>
-                        </button>
                         <input
-                            className="shrink mr-2 w-3/4 rounded border border-gray-300 p-2 ml-4 focus:border-blue-500 focus:outline-none"
+                            className="ml-4 mr-2 w-3/4 shrink rounded border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
                             id="content"
                             placeholder="Message"
                             type="text"
                         />
-                        <div className="flex-none ml-4 flex items-center">
+                        <div className="ml-4 flex flex-none items-center">
                             <button
-                                className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
+                                className="flex shrink-0 items-center justify-center rounded-xl bg-indigo-500 px-4 py-1 text-white hover:bg-indigo-600"
                                 type="submit"
                             >
                                 <span>Send</span>
                                 <span className="ml-2">
-                                <svg
-                                    className="w-4 h-4 transform rotate-45 -mt-px"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                                    ></path>
-                                </svg>
+                                    <svg
+                                        className="-mt-px h-4 w-4 rotate-45"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                        />
+                                    </svg>
                                 </span>
                             </button>
                         </div>
                     </form>
                 </div>
-            </div>
-
-            
+            )}
         </div>
-        </>
     );
 }
 
