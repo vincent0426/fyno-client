@@ -102,18 +102,17 @@ function WebSocketComponent({ rid }) {
         }
     }, [messageHistory]);
 
-
     return (
         groupUser &&
         <>
-            <div className="container pb-4 overflow-y-auto border-2 relative min-w-[450px]">
+            <div className="container pb-4 overflow-y-auto border-2 relative min-w-[450px] ">
                 <div className="sticky top-0 pt-4 pb-2 w-full bg-[url('https://source.unsplash.com/YCPkW_r_6uA')] bg-cover bg-center">
                     <div className="inline backdrop-opacity-10 bg-teal-900/80 mb-4 pl-8 text-3xl font-semibold text-gray-100 md:text-4xl ">
                         與<span className="text-transparent font-bold bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 z-10">{groupUser.name}</span> 的聊天
                     </div>
                 </div>
-                {groupUser && (  
-                    <div className="mx-auto w-[95%] max-w-2xl py-2 h-">
+                {groupUser &&(  
+                    <div className="mx-auto w-[95%] max-w-2xl pt-4 pb-10">
                         {messageHistory.map((message, index) => (
                             <div key={message.id} >
                                 {message.sender === user.id ? (
@@ -137,8 +136,7 @@ function WebSocketComponent({ rid }) {
                         
                     </div>
                 )}
-                <div className="flex flex-row items-center rounded-xl w-10/12 h-14 bg-zinc-200 px-4 ml-[8%] mr-[4%]
-                                sticky bottom-0 z-10 ">
+                <div className="fixed flex flex-row items-center rounded-xl w-[70%] h-14 bg-zinc-200 px-4 left-[25%] bottom-4 z-10">
                     <form
                         className="flex w-full mx-auto"
                         onSubmit={(e) => {

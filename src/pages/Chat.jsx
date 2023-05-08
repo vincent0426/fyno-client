@@ -63,13 +63,13 @@ function ChatPage() {
                         <ul>
                             {messageUsers && messageUsers.map((messageUser) => (
                                 <li key={messageUser.id} className="relative">
-                                    <div className={classNames(
+                                    {/* <div className={classNames(
                                             "absolute animate-ping -top-2 right-0 w-4 h-4 rounded-full bg-green-400",
                                             selectedReceiver === messageUser.id
                                                 ? "visible"
                                                 : "invisible",
                                             )}
-                                    ></div>
+                                    ></div> */}
                                     <button
                                         className={classNames(
                                             "w-11/12 px-4 py-2 text-left border-2 mb-1 mx-1.5",
