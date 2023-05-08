@@ -102,31 +102,45 @@ function WebSocketComponent({ rid }) {
         }
     }, [messageHistory]);
 
+
     return (
-        <div className="container mx-auto my-4">
-            {groupUser && (
-                <div className="mx-auto max-w-lg">
-                    {messageHistory.map((message, index) => (
-                        <div key={message.id} className="my-2 flex justify-between">
-                            {message.sender === user.id ? (
-                                <div className="font-bold">
-                                    <img alt="" src={user.avatar_url} />
-                                    {user.name}
-                                    :
-                                </div>
-                            ) : (
-                                <div className="font-bold">
-                                    <img alt="" src={groupUser.avatar_url} />
-                                    {groupUser.name}
-                                    :
-                                </div>
-                            )}
-                            <div>{message.content}</div>
-                        </div>
-                    ))}
-                    <div ref={messageEndRef} />
+        groupUser &&
+        <>
+            <div className="container pb-4 overflow-y-auto border-2 relative min-w-[450px]">
+                <div className="sticky top-0 pt-4 pb-2 w-full bg-[url('https://source.unsplash.com/YCPkW_r_6uA')] bg-cover bg-center">
+                    <div className="inline backdrop-opacity-10 bg-teal-900/80 mb-4 pl-8 text-3xl font-semibold text-gray-100 md:text-4xl ">
+                        與<span className="text-transparent font-bold bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 z-10">{groupUser.name}</span> 的聊天
+                    </div>
+                </div>
+                {groupUser && (  
+                    <div className="mx-auto w-[95%] max-w-2xl py-2 h-">
+                        {messageHistory.map((message, index) => (
+                            <div key={message.id} >
+                                {message.sender === user.id ? (
+                                    <div className="font-bold flex-row flex justify-end item-center mb-4 ">                     
+                                        <div className="mb-2 mr-2 py-3 px-4 bg-gradient-to-r from-sky-500/80 to-blue-500/70 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white item-center max-w-[65%]">
+                                            {message.content}
+                                        </div>
+                                        <img className="w-10 h-10 rounded-full" alt="" src={user.avatar_url} />
+                                    </div>
+                                ) : (
+                                    <div className="font-bold flex-row flex justify-start mb-4">
+                                        <img className="w-10 h-10 rounded-full" alt="" src={groupUser.avatar_url} />
+                                        <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                                            {message.content}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                        <div ref={messageEndRef} />
+                        
+                    </div>
+                )}
+                <div className="flex flex-row items-center rounded-xl w-10/12 h-14 bg-zinc-200 px-4 ml-[8%] mr-[4%]
+                                sticky bottom-0 z-10 ">
                     <form
-                        className="flex justify-between"
+                        className="flex w-full mx-auto"
                         onSubmit={(e) => {
                             e.preventDefault();
                             handleSendMessage(e.target.content.value);
@@ -165,8 +179,8 @@ function WebSocketComponent({ rid }) {
                         </div>
                     </form>
                 </div>
-            )}
-        </div>
+            </div>
+        </>
     );
 }
 
