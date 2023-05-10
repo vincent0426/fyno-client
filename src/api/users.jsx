@@ -16,3 +16,9 @@ export const getUser = async (id) => {
 
     return response;
 };
+
+export const getUserPosts = async (id) => {
+    const response = await axiosClient.get(`/api/users/${id}/posts`);
+
+    return response;
+};

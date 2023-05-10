@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+import { getUserPosts } from "../api/users";
 import { useAuth } from "../hooks/useAuth";
 import axiosClient from "../utils/axiosClient";
 
@@ -11,6 +12,23 @@ function Profile() {
     const navigate = useNavigate();
     const { username } = useParams();
     console.log("username", username);
+
+    useEffect(() => {
+        if (!user) return;
+        console.log("profile page");
+
+        const getPosts = async () => {
+            try {
+                console.log("user", user);
+                const { data } = await getUserPosts(user.id);
+                console.log("data", data);
+            } catch (error) {
+                console.log("error", error);
+            }
+        };
+
+        getPosts();
+    }, [user]);
 
     useEffect(() => {
         console.log("profile page");
