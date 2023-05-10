@@ -4,8 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 
 import { getUser } from "../../api/users";
 import { useAuth } from "../../hooks/useAuth";
+import axiosClient from "../../utils/axiosClient";
 
-function WebSocketComponent({ rid }) {
+function WebSocketComponent({ rid, setGroupUserJoined }) {
     const [messageHistory, setMessageHistory] = useState([]);
     const [groupUser, setGroupUser] = useState(null);
     // const { username } = useParams();
@@ -16,19 +17,67 @@ function WebSocketComponent({ rid }) {
     useEffect(() => {
         console.log("WebSocketComponent", rid);
 
-        const getGroupUser = async (id) => {
-            if (!id) return;
-            const { data: { user } } = await getUser(id);
+        const getGroupUser = async (rid) => {
+            if (!rid) return;
+            const { data: { user } } = await getUser(rid);
             setGroupUser(user);
         };
 
         getGroupUser(rid);
     }, [rid]);
 
+    useEffect(() => {
+        if (!rid) return;
+
+        // Check if another user is already connected to the WebSocket
+        const isAnotherUserConnected = async () => {
+            try {
+                const response = await axiosClient.get(`/ws/connection/${rid}`);
+                console.log("isAnotherUserConnected", response);
+
+                if (response.data.connected) {
+                    console.log("isAnotherUserConnected", response);
+                    setGroupUserJoined(
+                        (prev) => ({
+                            ...prev, [rid]: true,
+                        }),
+                    );
+                }
+            } catch (error) {
+                console.log("error", error);
+            }
+        };
+
+        isAnotherUserConnected();
+    }, [rid]);
+
     const handleIncomingMessage = (event) => {
         // Update only if receiver is the current user
         // transform the message into a JSON object
         const parsedMessage = JSON.parse(event.data);
+        console.log("parsedMessage", parsedMessage.type);
+
+        if (parsedMessage.type === "user-join" && parsedMessage.sender === rid) {
+            console.log("join");
+            setGroupUserJoined(
+                (prev) => ({
+                    ...prev, [parsedMessage.sender]: true,
+                }),
+            );
+
+            return;
+        }
+
+        if (parsedMessage.type === "user-leave" && parsedMessage.sender === rid) {
+            console.log("leave");
+            // it's a map {user_id: true/false}
+            setGroupUserJoined(
+                (prev) => ({
+                    ...prev, [parsedMessage.sender]: false,
+                }),
+            );
+            return;
+        }
 
         if ((parsedMessage.sender === user.id && parsedMessage.receiver === rid)
             || (parsedMessage.sender === rid && parsedMessage.receiver === user.id)) {
@@ -36,8 +85,24 @@ function WebSocketComponent({ rid }) {
         }
     };
 
+    const handleLeavePage = () => {
+        if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
+            const message = {
+                type: "user-leave",
+                sender: user.id,
+                receiver: null,
+                content: "",
+            };
+            webSocketRef.current.send(JSON.stringify(message));
+        }
+    };
+
     const handleWebSocketStateChange = () => {
+        console.log("handleWebSocketStateChange");
+
         if (webSocketRef.current) {
+            console.log("webSocketRef.current", webSocketRef.current);
+
             switch (webSocketRef.current.readyState) {
             case WebSocket.CONNECTING:
                 console.log("WebSocket connecting");
@@ -50,6 +115,7 @@ function WebSocketComponent({ rid }) {
                 break;
             case WebSocket.CLOSED:
                 console.log("WebSocket closed");
+                //
                 setTimeout(() => {
                     const websocketId = Cookies.get("websocket-id");
                     const newUrl = `ws://${window.location.hostname}:8080/ws/${user.id}?websocketId=${websocketId}`;
@@ -80,6 +146,14 @@ function WebSocketComponent({ rid }) {
     };
 
     useEffect(() => {
+        window.addEventListener("beforeunload", handleLeavePage);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleLeavePage);
+        };
+    }, []);
+
+    useEffect(() => {
         setMessageHistory([]);
         const webSocket = new WebSocket(`ws://${window.location.hostname}:8080/ws/${user.id}`);
         webSocket.addEventListener("open", handleWebSocketStateChange);
@@ -88,6 +162,7 @@ function WebSocketComponent({ rid }) {
         webSocketRef.current = webSocket;
 
         return () => {
+            console.log("WebSocketComponent unmounting");
             webSocket.close();
         };
     }, [rid]);
@@ -95,7 +170,7 @@ function WebSocketComponent({ rid }) {
     useEffect(() => {
         const lastMessage = messageHistory[messageHistory.length - 1];
 
-        if (lastMessage && lastMessage.sender !== user.id) {
+        if (lastMessage && lastMessage.sender !== user.id && messageEndRef.current) {
             messageEndRef.current.scrollIntoView({
                 behavior: "smooth",
             });
@@ -103,29 +178,32 @@ function WebSocketComponent({ rid }) {
     }, [messageHistory]);
 
     return (
-        groupUser &&
-        <>
-            <div className="container pb-4 overflow-y-auto border-2 relative min-w-[450px] ">
-                <div className="sticky top-0 pt-4 pb-2 w-full bg-[url('https://source.unsplash.com/YCPkW_r_6uA')] bg-cover bg-center">
-                    <div className="inline backdrop-opacity-10 bg-teal-900/80 mb-4 pl-8 text-3xl font-semibold text-gray-100 md:text-4xl ">
-                        與<span className="text-transparent font-bold bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 z-10">{groupUser.name}</span> 的聊天
+        groupUser
+        && (
+            <div className="container relative min-w-[450px] overflow-y-auto border-2 pb-4 ">
+                <div className="sticky top-0 w-full bg-[url('https://source.unsplash.com/YCPkW_r_6uA')] bg-cover bg-center pb-2 pt-4">
+                    <div className="mb-4 inline bg-teal-900/80 pl-8 text-3xl font-semibold text-gray-100 backdrop-opacity-10 md:text-4xl ">
+                        與
+                        <span className="z-10 bg-gradient-to-r from-sky-400 to-emerald-600 bg-clip-text font-bold text-transparent">{groupUser.name}</span>
+                        {" "}
+                        的聊天
                     </div>
                 </div>
-                {groupUser &&(  
-                    <div className="mx-auto w-[95%] max-w-2xl pt-4 pb-10">
+                {groupUser && (
+                    <div className="mx-auto w-[95%] max-w-2xl pb-10 pt-4">
                         {messageHistory.map((message, index) => (
-                            <div key={message.id} >
+                            <div key={message.id}>
                                 {message.sender === user.id ? (
-                                    <div className="font-bold flex-row flex justify-end item-center mb-4 ">                     
-                                        <div className="mb-2 mr-2 py-3 px-4 bg-gradient-to-r from-sky-500/80 to-blue-500/70 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white item-center max-w-[65%]">
+                                    <div className="item-center mb-4 flex flex-row justify-end font-bold ">
+                                        <div className="item-center mb-2 mr-2 max-w-[65%] rounded-l-3xl rounded-tr-xl bg-gradient-to-r from-sky-500/80 to-blue-500/70 px-4 py-3 text-white">
                                             {message.content}
                                         </div>
-                                        <img className="w-10 h-10 rounded-full" alt="" src={user.avatar_url} />
+                                        <img alt="" className="h-10 w-10 rounded-full" src={user.avatar_url} />
                                     </div>
                                 ) : (
-                                    <div className="font-bold flex-row flex justify-start mb-4">
-                                        <img className="w-10 h-10 rounded-full" alt="" src={groupUser.avatar_url} />
-                                        <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                                    <div className="mb-4 flex flex-row justify-start font-bold">
+                                        <img alt="" className="h-10 w-10 rounded-full" src={groupUser.avatar_url} />
+                                        <div className="ml-2 rounded-r-3xl rounded-tl-xl bg-gray-400 px-4 py-3 text-white">
                                             {message.content}
                                         </div>
                                     </div>
@@ -133,12 +211,12 @@ function WebSocketComponent({ rid }) {
                             </div>
                         ))}
                         <div ref={messageEndRef} />
-                        
+
                     </div>
                 )}
-                <div className="fixed flex flex-row items-center rounded-xl w-[70%] h-14 bg-zinc-200 px-4 left-[25%] bottom-4 z-10">
+                <div className="fixed bottom-4 left-[25%] z-10 flex h-14 w-[70%] flex-row items-center rounded-xl bg-zinc-200 px-4">
                     <form
-                        className="flex w-full mx-auto"
+                        className="mx-auto flex w-full"
                         onSubmit={(e) => {
                             e.preventDefault();
                             handleSendMessage(e.target.content.value);
@@ -178,7 +256,7 @@ function WebSocketComponent({ rid }) {
                     </form>
                 </div>
             </div>
-        </>
+        )
     );
 }
 

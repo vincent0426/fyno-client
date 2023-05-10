@@ -9,6 +9,7 @@ import axiosClient from "../utils/axiosClient";
 function ChatPage() {
     const [selectedReceiver, setSelectedReceiver] = useState(null);
     const [messageUsers, setMessageUsers] = useState(null);
+    const [groupUserJoined, setGroupUserJoined] = useState(null);
 
     const handleReceiverChange = (id) => {
         console.log("id", id);
@@ -63,19 +64,16 @@ function ChatPage() {
                         <ul>
                             {messageUsers && messageUsers.map((messageUser) => (
                                 <li key={messageUser.id} className="relative">
-                                    {/* <div className={classNames(
-                                            "absolute animate-ping -top-2 right-0 w-4 h-4 rounded-full bg-green-400",
-                                            selectedReceiver === messageUser.id
-                                                ? "visible"
-                                                : "invisible",
-                                            )}
-                                    ></div> */}
+                                    <div className={classNames(groupUserJoined && groupUserJoined[messageUser.id]
+                                            && "absolute animate-ping -top-2 right-0 w-4 h-4 rounded-full bg-green-400")}
+                                    />
                                     <button
                                         className={classNames(
                                             "w-11/12 px-4 py-2 text-left border-2 mb-1 mx-1.5",
                                             selectedReceiver === messageUser.id
                                                 ? "bg-gray-300 ring ring-zinc-500/50 hover:scale-105"
                                                 : "bg-white hover:scale-105",
+
                                         )}
                                         type="button"
                                         onClick={() => handleReceiverChange(messageUser.id)}
@@ -86,7 +84,7 @@ function ChatPage() {
                             ))}
                         </ul>
                     </div>
-                    <WebSocketComponent rid={selectedReceiver} />
+                    <WebSocketComponent rid={selectedReceiver} setGroupUserJoined={setGroupUserJoined} />
                 </div>
             </div>
 
