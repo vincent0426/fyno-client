@@ -47,27 +47,31 @@ export default function Example() {
                     }}
                 />
             </div>
+            <div className="bg-white">
+                <iframe className="absolute right-8 top-24" width="500" height="280" src="https://www.youtube.com/embed/rw6F9MvOwKI?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <a className="absolute right-8 top-96 hover:underline hover:decoration-teal-600 hover:decoration-4 text-base font-semibold" href="https://www.youtube.com/results?search_query=%E6%B5%81%E6%B5%AA%E5%8B%95%E7%89%A9">更多影片<span aria-hidden="true">&rarr;</span></a>
+            </div>
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto max-w-2xl lg:mx-0">
+                <div className="mx-auto lg:mx-0">
                     <h2 className="text-4xl font-bold tracking-tight text-black sm:text-6xl">你知道嗎?</h2>
-                    <p className="mt-6 text-lg leading-8 text-black">
-                        全球每年有數百萬隻流浪動物面臨無家可歸的困境。這些數量巨大的流浪動物對於社會和環境都帶來了壓力。
+                    <p className="mt-10 text-lg max-w-xl leading-8 text-black">
+                        全球每年有數百萬隻流浪動物面臨無家可歸的困境。些數量巨大的流浪動物對於社會和環境都帶來了壓力。
                     </p>
-                    <p className="mt-6 text-lg leading-8 text-black font-semibold underline decoration-teal-600 decoration-4">
-                        關注更多:
+                    <p className="mt-10 text-lg leading-8 text-black font-semibold underline decoration-teal-600 decoration-4">
+                        更多網站:
                     </p>
                 </div>
                 <div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">
                     <div className="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-black sm:grid-cols-2 md:flex lg:gap-x-10">
                         {links.map((link) => (
-                            <a key={link.name} href={link.href} target="_blank">
+                            <a key={link.name} href={link.href} target="_blank" className="hover:underline hover:decoration-teal-600 hover:decoration-4">
                                 {link.name} <span aria-hidden="true">&rarr;</span>
                             </a>
                         ))}
                     </div>
                     <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
                         {stats.map((stat) => (
-                            <div key={stat.name} className="rounded-xl shadow-xl transition-transform duration-500 transform group hover:rotate-y-180">
+                            <div key={stat.name} className="rounded-xl shadow-xl transition-transform duration-500 transform group hover:rotate-y-12">
                                 <div className="relative">
                                     <img alt="" className="rounded-xl shadow-xl shadow-black/40" src={stat.src} />
                                 </div>
@@ -78,9 +82,6 @@ export default function Example() {
                             </div>
                         ))}
                     </dl>
-
-
-
                 </div>
             </div>
         </div>
