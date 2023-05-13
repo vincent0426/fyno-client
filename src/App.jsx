@@ -14,6 +14,7 @@ import Hero from "./pages/Hero";
 import Posts from "./pages/Posts";
 import Profile from "./pages/Profile";
 import SinglePost from "./pages/SinglePost";
+import Information from "./pages/Information";
 import { compose } from "./utils/utils";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
                             <Route element={<Posts />} path="/posts" />
                             <Route element={<SinglePost />} path="/posts/:id" />
                             <Route element={<Chat />} path="/chat" />
+                            <Route element={<Information />} path="/information" />
                         </Route>
                     </Routes>
                 </Provider>
