@@ -28,8 +28,8 @@ const navigation = [
         href: "/chat",
     },
     {
-        name: "Company",
-        href: "#",
+        name: "Must Know!",
+        href: "/information",
     },
 ];
 
