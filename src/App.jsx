@@ -16,6 +16,9 @@ import Profile from "./pages/Profile";
 import SinglePost from "./pages/SinglePost";
 import Information from "./pages/Information";
 import { compose } from "./utils/utils";
+import ProtectedRoute from "./components/PrivateRoute/ProtectedRoute";
+import UserProtectedRoute from "./components/PrivateRoute/UserPropectedRoute";
+
 
 function App() {
     const Provider = compose([FlashProvider, AuthProvider]);
@@ -37,13 +40,17 @@ function App() {
                 <Provider>
                     <Routes>
                         <Route element={<Header />}>
+                            <Route element={<ProtectedRoute />} >
+                                <Route element={<Profile />} path="/profile/:username" />
+                                <Route element={<CreatePost />} path="/create-post" />
+                                <Route element={<Chat />} path="/chat" />
+                            </Route>
+                            <Route element={<UserProtectedRoute />}>
+                                <Route element={<Auth />} path="/auth" />
+                            </Route>
                             <Route element={<Hero />} path="/" />
-                            <Route element={<Auth />} path="/auth" />
-                            <Route element={<Profile />} path="/profile/:username" />
-                            <Route element={<CreatePost />} path="/create-post" />
                             <Route element={<Posts />} path="/posts" />
                             <Route element={<SinglePost />} path="/posts/:id" />
-                            <Route element={<Chat />} path="/chat" />
                             <Route element={<Information />} path="/information" />
                         </Route>
                     </Routes>
