@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Select from "react-select";
 
 import axiosClient from "../utils/axiosClient";
 
 export default function Posts() {
     const [posts, setPosts] = useState([]);
-    console.log("post init");
+    const [locations, setLocations] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedLocation, setSelectedLocation] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    const onSearch = () => {
+        // TODO: search
+    };
+
+    // Update posts when selectedLocation or selectedCategory changes
     useEffect(() => {
-        console.log("posts page");
+        console.log("selectedLocation", selectedLocation);
+        console.log("selectedCategory", selectedCategory);
 
         const getPosts = async () => {
             try {
-                const { data } = await axiosClient.get("/api/posts");
+                const { data } = await axiosClient.get("/api/posts", {
+                    params: {
+                        location_id: selectedLocation?.value,
+                        category_id: selectedCategory?.value,
+                    },
+                });
                 setPosts(data.posts);
                 console.log("data", data);
             } catch (error) {
@@ -19,6 +36,38 @@ export default function Posts() {
         };
 
         getPosts();
+    }, [selectedLocation, selectedCategory]);
+
+    useEffect(() => {
+        const getLocations = async () => {
+            const response = await axiosClient.get("/api/locations");
+            console.log(response.data.locations);
+
+            const options = response.data.locations.map((location) => ({
+                value: location.id,
+                label: location.name,
+            }));
+
+            setLocations(options);
+        };
+
+        getLocations();
+    }, []);
+
+    useEffect(() => {
+        const getCategories = async () => {
+            const response = await axiosClient.get("/api/categories");
+            console.log(response.data.categories);
+
+            const options = response.data.categories.map((category) => ({
+                value: category.id,
+                label: category.name,
+            }));
+
+            setCategories(options);
+        };
+
+        getCategories();
     }, []);
 
     return (
@@ -33,8 +82,39 @@ export default function Posts() {
                 </div>
                 <div className="group relative mt-8 h-56 w-2/5 rounded border-4 border-double border-l-teal-950 border-opacity-10 hover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
                     <p>根據您的條件搜尋...</p>
-
-                    <button className="invisible absolute bottom-4 right-4 ml-2 animate-bounce rounded-lg border border-slate-700 bg-gradient-to-r from-green-400 via-green-500 to-green-600 p-2.5 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-1 focus:ring-green-300 group-hover:visible" type="submit">
+                    <div className="flex items-center gap-6 sm:col-span-6">
+                        <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
+                            Category:
+                        </label>
+                        <Select
+                            className="flex-1"
+                            id="category"
+                            name="category"
+                            options={categories}
+                            placeholder="Select a category"
+                            value={selectedCategory}
+                            onChange={setSelectedCategory}
+                        />
+                    </div>
+                    <div className="flex items-center gap-6 sm:col-span-6">
+                        <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
+                            Current location:
+                        </label>
+                        <Select
+                            className="flex-1 bg-white"
+                            id="current-location"
+                            name="current-location"
+                            options={locations}
+                            placeholder="Select current location"
+                            value={selectedLocation}
+                            onChange={setSelectedLocation}
+                        />
+                    </div>
+                    <button
+                        className="invisible absolute bottom-4 right-4 ml-2 animate-bounce rounded-lg border border-slate-700 bg-gradient-to-r from-green-400 via-green-500 to-green-600 p-2.5 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-1 focus:ring-green-300 group-hover:visible"
+                        type="submit"
+                        onClick={onSearch}
+                    >
                         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
                         <span className="sr-only">Search</span>
                     </button>
@@ -72,34 +152,33 @@ export default function Posts() {
             )}
             <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3">
                 {posts && posts.map((post) => (
-                    <article
-                        key={post.id}
-                        className=" flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl
-                    transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
-                    >
-                        <img alt="" className="w-12/12  rounded-lg grayscale-[35%]" src="https://source.unsplash.com/6GMq7AGxNbE" />
+                    <a key={post.id} href={`/posts/${post.id}`}>
+                        <article
+                            className="flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
+                        >
+                            <img alt="" className="w-12/12  rounded-lg grayscale-[35%]" src="https://source.unsplash.com/6GMq7AGxNbE" />
 
-                        <div className="relative h-full">
-                            <div className="align-center  mt-4 flex-col justify-between">
-                                <h2 className="text-center text-sm font-bold md:text-2xl">{post.name}</h2>
-                                <div className="mt-2 justify-self-end text-center text-sm italic">{post.kind}</div>
+                            <div className="relative h-full">
+                                <div className="align-center  mt-4 flex-col justify-between">
+                                    <h2 className="text-center text-sm font-bold md:text-2xl">{post.name}</h2>
+                                    <div className="mt-2 justify-self-end text-center text-sm italic">{post.kind}</div>
+                                </div>
+
+                                <div className="absolute left-1/2 top-1/3  mx-auto h-0.5 min-h-[1%] w-2/6 -translate-x-1/2 -translate-y-1/2 self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-20" />
+
+                                <div className="absolute top-1/2 flex h-3/6 w-full justify-center px-4 text-gray-700">
+                                    <span className="text-center text-sm font-black md:text-xl">{post.content}</span>
+                                </div>
+                                <div className="absolute bottom-0 flex flex-row">
+                                    <svg aria-hidden="true" className="h-6 w-6 stroke-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                    <span className="inline">{post.location.name}</span>
+                                </div>
                             </div>
-
-                            <div className="absolute left-1/2 top-1/3  mx-auto h-0.5 min-h-[1%] w-2/6 -translate-x-1/2 -translate-y-1/2 self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-20" />
-
-                            <div className="absolute top-1/2 flex h-3/6 w-full justify-center px-4 text-gray-700">
-                                <span className="text-center text-sm font-black md:text-xl">{post.content}</span>
-                            </div>
-                            <div className="absolute bottom-0 flex flex-row">
-                                <svg aria-hidden="true" className="h-6 w-6 stroke-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                                <span className="inline">{post.location.name}</span>
-                            </div>
-                        </div>
-
-                    </article>
+                        </article>
+                    </a>
                 ))}
             </div>
 

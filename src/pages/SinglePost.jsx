@@ -14,7 +14,7 @@ function SinglePost() {
             try {
                 const response = await axiosClient.get(`/api/posts/${postId}`);
                 setPost(response.data.post);
-                console.log("response", response);
+                console.log("response", response.data.post);
             } catch (error) {
                 console.log("error", error);
             }
