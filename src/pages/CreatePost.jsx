@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { v4 as uuidv4 } from "uuid";
 
@@ -11,6 +11,7 @@ import { generateFile, generatePostImages } from "../utils/post";
 
 export default function CreatePost() {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [selectedOption, setSelectedOption] = useState({
         kind: "",
         name: "",
@@ -123,11 +124,10 @@ export default function CreatePost() {
         console.log(requestBody);
         const response = await axiosClient.post("http://localhost:8080/api/posts", requestBody);
         console.log(response);
-        // TODO: navigate to /posts/:id
-        // if (response.status === 201) {
-        //     console.log(response.data.postID);
-        //     console.log("success");
-        // }
+
+        if (response.status === 201) {
+            navigate(`/posts/${response.data.postID}`);
+        }
     };
 
     return (

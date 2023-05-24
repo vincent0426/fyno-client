@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+import { getUserPosts, updateUser } from "../api/users";
 import { useAuth } from "../hooks/useAuth";
 import axiosClient from "../utils/axiosClient";
 
@@ -11,6 +12,23 @@ function Profile() {
     const navigate = useNavigate();
     const { username } = useParams();
     console.log("username", username);
+
+    useEffect(() => {
+        if (!user) return;
+        console.log("profile page");
+
+        const getPosts = async () => {
+            try {
+                console.log("user", user);
+                const { data } = await getUserPosts(user.id);
+                console.log("data", data);
+            } catch (error) {
+                console.log("error", error);
+            }
+        };
+
+        getPosts();
+    }, [user]);
 
     useEffect(() => {
         console.log("profile page");
@@ -26,6 +44,16 @@ function Profile() {
 
         getUser();
     }, []);
+
+    const onProfileUpdate = async (e) => {
+        e.preventDefault();
+        console.log("user", user);
+        const response = await updateUser(user);
+
+        if (response.status === 200) {
+            navigate(`/profile/${user.name}`);
+        }
+    };
 
     const onMessageClick = async () => {
         const response = await axiosClient.post("/api/messages/user_groups", {
@@ -44,6 +72,21 @@ function Profile() {
                     <h1>{user.name}</h1>
                     <p>{user.email}</p>
                 </div>
+                <form>
+                    <input
+                        type="text"
+                        value={user.name}
+                        onChange={(e) => {
+                            setUser({
+                                ...user,
+                                name: e.target.value,
+                            });
+                        }}
+                    />
+                    <button onClick={onProfileUpdate}>
+                        Save
+                    </button>
+                </form>
                 <button
                     className={classNames(
                         "flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600",

@@ -28,8 +28,8 @@ const navigation = [
         href: "/chat",
     },
     {
-        name: "Company",
-        href: "#",
+        name: "Must Know!",
+        href: "/information",
     },
 ];
 
@@ -77,6 +77,7 @@ export default function Header() {
                                     >
                                         <PencilSquareIcon className="inline-block h-5 w-5" />
                                     </a>
+
                                 ) : (
                                     <a
                                         key={item.name}
@@ -85,6 +86,7 @@ export default function Header() {
                                     >
                                         {item.name}
                                     </a>
+
                                 )
                             ))}
                         </div>
