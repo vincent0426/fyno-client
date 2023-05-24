@@ -22,3 +22,12 @@ export const getUserPosts = async (id) => {
 
     return response;
 };
+
+export const updateUser = async (user) => {
+    console.log("user", user);
+    const response = await axiosClient.put("/api/users/me", {
+        name: user.name,
+    });
+
+    return response;
+};
