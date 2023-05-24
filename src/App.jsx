@@ -9,6 +9,7 @@ import { FlashProvider } from "./context/FlashContext";
 import Header from "./layouts/Header";
 import Auth from "./pages/Auth";
 import Chat from "./pages/Chat";
+import Oops from "./pages/Oops";
 import CreatePost from "./pages/CreatePost";
 import Hero from "./pages/Hero";
 import Posts from "./pages/Posts";
@@ -43,6 +44,7 @@ function App() {
                             <Route element={<Posts />} path="/posts" />
                             <Route element={<SinglePost />} path="/posts/:id" />
                             <Route element={<Chat />} path="/chat" />
+                            <Route element={<Oops />} path="/Oops" />
                         </Route>
                     </Routes>
                 </Provider>
