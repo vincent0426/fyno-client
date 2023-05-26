@@ -14,6 +14,7 @@ import Chat from "./pages/Chat";
 import CreatePost from "./pages/CreatePost";
 import Hero from "./pages/Hero";
 import Information from "./pages/Information";
+import Oops from "./pages/Oops";
 import Posts from "./pages/Posts";
 import Profile from "./pages/Profile";
 import SinglePost from "./pages/SinglePost";
@@ -50,7 +51,9 @@ function App() {
                             <Route element={<Hero />} path="/" />
                             <Route element={<Posts />} path="/posts" />
                             <Route element={<SinglePost />} path="/posts/:id" />
+                            <Route element={<Chat />} path="/chat" />
                             <Route element={<Information />} path="/information" />
+                            <Route element={<Oops />} path="*" />
                         </Route>
                     </Routes>
                 </Provider>
