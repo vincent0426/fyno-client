@@ -11,10 +11,10 @@ import { FlashProvider } from "./context/FlashContext";
 import Header from "./layouts/Header";
 import Auth from "./pages/Auth";
 import Chat from "./pages/Chat";
-import Oops from "./pages/Oops";
 import CreatePost from "./pages/CreatePost";
 import Hero from "./pages/Hero";
 import Information from "./pages/Information";
+import Oops from "./pages/Oops";
 import Posts from "./pages/Posts";
 import Profile from "./pages/Profile";
 import SinglePost from "./pages/SinglePost";
@@ -51,12 +51,9 @@ function App() {
                             <Route element={<Hero />} path="/" />
                             <Route element={<Posts />} path="/posts" />
                             <Route element={<SinglePost />} path="/posts/:id" />
-<<<<<<< HEAD
                             <Route element={<Chat />} path="/chat" />
-                            <Route element={<Oops />} path="/Oops" />
-=======
                             <Route element={<Information />} path="/information" />
->>>>>>> c77463846d3d784509a10bde784c1682fbb5ef66
+                            <Route element={<Oops />} path="*" />
                         </Route>
                     </Routes>
                 </Provider>
