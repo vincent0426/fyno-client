@@ -26,6 +26,7 @@ function SinglePost() {
                 setPost(response.data.post);
                 console.log("response", response);
                 console.log(response.data.post)
+
             } catch (error) {
                 console.log("error", error);
             }
