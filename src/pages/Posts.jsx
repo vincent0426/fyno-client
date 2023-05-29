@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Select from "react-select";
 
 import axiosClient from "../utils/axiosClient";
 
 export default function Posts() {
     const [posts, setPosts] = useState([]);
-    console.log("post init");
+    const [locations, setLocations] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedLocation, setSelectedLocation] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    const onSearch = () => {
+        // TODO: search
+    };
+
+    // Update posts when selectedLocation or selectedCategory changes
     useEffect(() => {
-        console.log("posts page");
+        console.log("selectedLocation", selectedLocation);
+        console.log("selectedCategory", selectedCategory);
 
         const getPosts = async () => {
             try {
-                const { data } = await axiosClient.get("/api/posts");
+                const { data } = await axiosClient.get("/api/posts", {
+                    params: {
+                        location_id: selectedLocation?.value,
+                        category_id: selectedCategory?.value,
+                    },
+                });
                 setPosts(data.posts);
                 console.log("data", data);
             } catch (error) {
@@ -19,28 +36,92 @@ export default function Posts() {
         };
 
         getPosts();
+    }, [selectedLocation, selectedCategory]);
+
+    useEffect(() => {
+        const getLocations = async () => {
+            const response = await axiosClient.get("/api/locations");
+            console.log(response.data.locations);
+
+            const options = response.data.locations.map((location) => ({
+                value: location.id,
+                label: location.name,
+            }));
+
+            setLocations(options);
+        };
+
+        getLocations();
+    }, []);
+
+    useEffect(() => {
+        const getCategories = async () => {
+            const response = await axiosClient.get("/api/categories");
+            console.log(response.data.categories);
+
+            const options = response.data.categories.map((category) => ({
+                value: category.id,
+                label: category.name,
+            }));
+
+            setCategories(options);
+        };
+
+        getCategories();
     }, []);
 
     return (
-        posts.length && (
-            <div className="bg-emerald-300/[.2]  py-5 sm:py-10 ">
-                <div className="mx-auto h-96 max-w-7xl bg-[url('https://source.unsplash.com/6GMq7AGxNbE')] bg-cover bg-fixed bg-center bg-no-repeat p-6 lg:px-8">
-                    <div className="mx-auto max-w-6xl">
-                        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">開始認養你的下一個寵物！</h2>
-                        <p className="mt-2 text-lg leading-8 text-gray-600">
-                            別怕，我們一起回家
-                        </p>
-                    </div>
-                    <div className="group relative mt-8 h-56 w-2/5 rounded border-4 border-double border-l-teal-950 border-opacity-10 hover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
-                        <p>根據您的條件搜尋...</p>
 
-                        <button className="invisible absolute bottom-4 right-4 ml-2 animate-bounce rounded-lg border border-slate-700 bg-gradient-to-r from-green-400 via-green-500 to-green-600 p-2.5 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-1 focus:ring-green-300 group-hover:visible" type="submit">
-                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
-                            <span className="sr-only">Search</span>
-                        </button>
-
-                    </div>
+        <div className="bg-emerald-300/[.2]  py-5 sm:py-10 ">
+            <div className="mx-auto h-96 max-w-7xl bg-[url('https://source.unsplash.com/6GMq7AGxNbE')] bg-cover bg-fixed bg-center bg-no-repeat p-6 lg:px-8">
+                <div className="mx-auto max-w-6xl">
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">開始認養你的下一個寵物！</h2>
+                    <p className="mt-2 text-lg leading-8 text-gray-600">
+                        別怕，我們一起回家
+                    </p>
                 </div>
+                <div className="group relative mt-8 h-56 w-2/5 rounded border-4 border-double border-l-teal-950 border-opacity-10 hover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
+                    <p>根據您的條件搜尋...</p>
+                    <div className="flex items-center gap-6 sm:col-span-6">
+                        <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
+                            Category:
+                        </label>
+                        <Select
+                            className="flex-1"
+                            id="category"
+                            name="category"
+                            options={categories}
+                            placeholder="Select a category"
+                            value={selectedCategory}
+                            onChange={setSelectedCategory}
+                        />
+                    </div>
+                    <div className="flex items-center gap-6 sm:col-span-6">
+                        <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
+                            Current location:
+                        </label>
+                        <Select
+                            className="flex-1 bg-white"
+                            id="current-location"
+                            name="current-location"
+                            options={locations}
+                            placeholder="Select current location"
+                            value={selectedLocation}
+                            onChange={setSelectedLocation}
+                        />
+                    </div>
+                    <button
+                        className="invisible absolute bottom-4 right-4 ml-2 animate-bounce rounded-lg border border-slate-700 bg-gradient-to-r from-green-400 via-green-500 to-green-600 p-2.5 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-1 focus:ring-green-300 group-hover:visible"
+                        type="submit"
+                        onClick={onSearch}
+                    >
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
+                        <span className="sr-only">Search</span>
+                    </button>
+
+                </div>
+            </div>
+            {posts && posts.length && (
                 <div className="flex-column relative mt-10 flex h-[18rem] justify-evenly md:h-[24rem] md:flex-row">
                     <div>
                         <div className="... absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2 truncate text-3xl font-semibold underline decoration-teal-600 decoration-4">您的每日推薦</div>
@@ -68,12 +149,12 @@ export default function Posts() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3">
-                    {posts && posts.map((post) => (
+            )}
+            <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3">
+                {posts && posts.map((post) => (
+                    <a key={post.id} href={`/posts/${post.id}`}>
                         <article
-                            key={post.id}
-                            className=" flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl
-                    transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
+                            className="flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
                         >
                             <img alt="" className="w-12/12  rounded-lg grayscale-[35%]" src="https://source.unsplash.com/6GMq7AGxNbE" />
 
@@ -96,12 +177,11 @@ export default function Posts() {
                                     <span className="inline">{post.location.name}</span>
                                 </div>
                             </div>
-
                         </article>
-                    ))}
-                </div>
-
+                    </a>
+                ))}
             </div>
-        )
+
+        </div>
     );
 }
