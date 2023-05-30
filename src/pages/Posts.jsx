@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 
 import axiosClient from "../utils/axiosClient";
@@ -13,13 +12,31 @@ export default function Posts() {
 
     const onSearch = () => {
         // TODO: search
+        // filterSearch with selectedLocation and selectedCategory, update posts
+        // if they are null then everything is selected
+        const newPosts = posts.filter((post) => {
+            if (selectedLocation && selectedCategory) {
+                return (
+                    post.location.id === selectedLocation.value
+                    && post.category.id === selectedCategory.value
+                );
+            }
+
+            if (selectedLocation) {
+                return post.location.id === selectedLocation.value;
+            }
+
+            if (selectedCategory) {
+                return post.category.id === selectedCategory.value;
+            }
+
+            return true;
+        });
+        setPosts(newPosts);
     };
 
     // Update posts when selectedLocation or selectedCategory changes
     useEffect(() => {
-        console.log("selectedLocation", selectedLocation);
-        console.log("selectedCategory", selectedCategory);
-
         const getPosts = async () => {
             try {
                 const { data } = await axiosClient.get("/api/posts", {
@@ -154,13 +171,11 @@ export default function Posts() {
 
             <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3">
                 {posts && posts.map((post) => (
-                    <a href={`/posts/${post.id}`}>
+                    <a key={post.id} href={`/posts/${post.id}`}>
                         <article
-                            key={post.id}
                             className=" flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl
                     transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
                         >
-
 
                             <img alt="" className="w-12/12  rounded-lg grayscale-[35%]" src="https://source.unsplash.com/6GMq7AGxNbE" />
 
