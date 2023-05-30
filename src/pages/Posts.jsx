@@ -143,19 +143,25 @@ export default function Posts() {
                                         yr
                                     </p>
                                     <p className="text-base">{posts[0].content}</p>
-                                    <button className="mt-2 rounded-md bg-neutral-800 px-2 py-1 text-sm hover:bg-neutral-900">Read More</button>
+                                    <a href={`/posts/${posts[0].id}`}><button className="mt-2 rounded-md bg-neutral-800 px-2 py-1 text-sm hover:bg-neutral-900">Read More</button></a>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
+
             <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3">
                 {posts && posts.map((post) => (
-                    <a key={post.id} href={`/posts/${post.id}`}>
+                    <a href={`/posts/${post.id}`}>
                         <article
-                            className="flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
+                            key={post.id}
+                            className=" flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl
+                    transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
                         >
+
+
                             <img alt="" className="w-12/12  rounded-lg grayscale-[35%]" src="https://source.unsplash.com/6GMq7AGxNbE" />
 
                             <div className="relative h-full">
@@ -177,6 +183,7 @@ export default function Posts() {
                                     <span className="inline">{post.location.name}</span>
                                 </div>
                             </div>
+
                         </article>
                     </a>
                 ))}

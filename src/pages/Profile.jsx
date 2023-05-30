@@ -90,7 +90,7 @@ function Profile() {
                 <button
                     className={classNames(
                         "flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600",
-                    // user.name === username ? "hidden" : "",
+                        // user.name === username ? "hidden" : "",
                     )}
                     type="button"
                     onClick={onMessageClick}

@@ -20,10 +20,6 @@ const navigation = [
         href: "/posts",
     },
     {
-        name: "Features",
-        href: "#",
-    },
-    {
         name: "Chat",
         href: "/chat",
     },
