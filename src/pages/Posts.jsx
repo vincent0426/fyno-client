@@ -3,6 +3,57 @@ import Select from "react-select";
 
 import axiosClient from "../utils/axiosClient";
 
+const customStyles = {
+    control: (provided, state) => ({
+        ...provided,
+        backgroundColor: "transparent",
+        border: "2px solid white",
+        borderRadius: "0.5rem",
+        boxShadow: state.isFocused ? null : null,
+        "&:hover": {
+            border: "2px solid #4fd1c5",
+        },
+    }),
+    menu: (provided, state) => ({
+        ...provided,
+        borderRadius: "0.5rem",
+        boxShadow: "0 0 1rem 0 rgba(0, 0, 0, 0.1)",
+    }),
+    menuList: (provided, state) => ({
+        ...provided,
+        padding: 0,
+    }),
+    option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isSelected ? "#4fd1c5" : null,
+        color: state.isSelected ? "white" : null,
+        "&:hover": {
+            backgroundColor: "#4fd1c5",
+            color: "white",
+        },
+    }),
+    placeholder: (provided, state) => ({
+        ...provided,
+        color: "white",
+    }),
+    singleValue: (provided, state) => ({
+        ...provided,
+        color: "white",
+    }),
+    indicatorSeparator: (provided, state) => ({
+        ...provided,
+        backgroundColor: "white",
+    }),
+    dropdownIndicator: (provided, state) => ({
+        ...provided,
+        color: "white",
+        "&:hover": {
+            color: "#4fd1c5",
+        },
+    }),
+
+};
+
 export default function Posts() {
     const [posts, setPosts] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -97,38 +148,41 @@ export default function Posts() {
                         別怕，我們一起回家
                     </p>
                 </div>
-                <div className="group relative mt-8 h-56 w-2/5 rounded border-4 border-double border-l-teal-950 border-opacity-10 hover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
-                    <p>根據您的條件搜尋...</p>
+                <div className="group relative mt-8 h-56 w-2/5 space-y-4 rounded border-4 border-double border-l-teal-950 border-opacity-10 px-10 py-4 hover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
+                    {/* for searching purpose */}
+                    <p className="text-xl text-white">依據您的需求搜尋</p>
                     <div className="flex items-center gap-6 sm:col-span-6">
-                        <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
-                            Category:
+                        <label className="block text-sm font-medium leading-6 text-white" htmlFor="current-location">
+                            類別:
                         </label>
                         <Select
-                            className="flex-1"
+                            className="w-10 flex-1"
                             id="category"
                             name="category"
                             options={categories}
                             placeholder="Select a category"
+                            styles={customStyles}
                             value={selectedCategory}
                             onChange={setSelectedCategory}
                         />
                     </div>
                     <div className="flex items-center gap-6 sm:col-span-6">
-                        <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
-                            Current location:
+                        <label className="block text-sm font-medium leading-6 text-white" htmlFor="current-location">
+                            現在位置:
                         </label>
                         <Select
-                            className="flex-1 bg-white"
+                            className="flex-1"
                             id="current-location"
                             name="current-location"
                             options={locations}
                             placeholder="Select current location"
+                            styles={customStyles}
                             value={selectedLocation}
                             onChange={setSelectedLocation}
                         />
                     </div>
                     <button
-                        className="invisible absolute bottom-4 right-4 ml-2 animate-bounce rounded-lg border border-slate-700 bg-gradient-to-r from-green-400 via-green-500 to-green-600 p-2.5 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-1 focus:ring-green-300 group-hover:visible"
+                        className="invisible absolute bottom-1 right-4 ml-2 animate-bounce rounded-lg border border-slate-700 bg-gradient-to-r from-green-400 via-green-500 to-green-600 p-2.5 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-1 focus:ring-green-300 group-hover:visible"
                         type="submit"
                         onClick={onSearch}
                     >
