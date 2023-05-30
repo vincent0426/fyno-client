@@ -38,7 +38,9 @@ function SinglePost() {
     const navigate = useNavigate();
 
     const onMessageClick = async () => {
-        const response = post.userID
+        const response = await axiosClient.post("/api/messages/user_groups", {
+            message_partner_id: post.userID,
+        });
 
         console.log("response", response);
         navigate("/chat");
