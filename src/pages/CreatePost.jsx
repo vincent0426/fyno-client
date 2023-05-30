@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
@@ -88,7 +89,7 @@ export default function CreatePost() {
                 // Only uncomment this line if you want to upload images to S3
                 const file = generateFile(image);
                 // const response = await axios.put(presignedURL, file);
-                // console.log(response);
+                console.log(response);
             });
         }
 
@@ -120,6 +121,7 @@ export default function CreatePost() {
                 id: selectedOption.category.value,
             },
             post_images: tempPostImages,
+            // post_images: postImages,
         };
         console.log(requestBody);
         const response = await axiosClient.post("http://localhost:8080/api/posts", requestBody);

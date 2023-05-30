@@ -1,8 +1,58 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 
 import axiosClient from "../utils/axiosClient";
+
+const customStyles = {
+    control: (provided, state) => ({
+        ...provided,
+        backgroundColor: "transparent",
+        border: "2px solid white",
+        borderRadius: "0.5rem",
+        boxShadow: state.isFocused ? null : null,
+        "&:hover": {
+            border: "2px solid #4fd1c5",
+        },
+    }),
+    menu: (provided, state) => ({
+        ...provided,
+        borderRadius: "0.5rem",
+        boxShadow: "0 0 1rem 0 rgba(0, 0, 0, 0.1)",
+    }),
+    menuList: (provided, state) => ({
+        ...provided,
+        padding: 0,
+    }),
+    option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isSelected ? "#4fd1c5" : null,
+        color: state.isSelected ? "white" : null,
+        "&:hover": {
+            backgroundColor: "#4fd1c5",
+            color: "white",
+        },
+    }),
+    placeholder: (provided, state) => ({
+        ...provided,
+        color: "white",
+    }),
+    singleValue: (provided, state) => ({
+        ...provided,
+        color: "white",
+    }),
+    indicatorSeparator: (provided, state) => ({
+        ...provided,
+        backgroundColor: "white",
+    }),
+    dropdownIndicator: (provided, state) => ({
+        ...provided,
+        color: "white",
+        "&:hover": {
+            color: "#4fd1c5",
+        },
+    }),
+
+};
 
 export default function Posts() {
     const [posts, setPosts] = useState([]);
@@ -13,13 +63,31 @@ export default function Posts() {
 
     const onSearch = () => {
         // TODO: search
+        // filterSearch with selectedLocation and selectedCategory, update posts
+        // if they are null then everything is selected
+        const newPosts = posts.filter((post) => {
+            if (selectedLocation && selectedCategory) {
+                return (
+                    post.location.id === selectedLocation.value
+                    && post.category.id === selectedCategory.value
+                );
+            }
+
+            if (selectedLocation) {
+                return post.location.id === selectedLocation.value;
+            }
+
+            if (selectedCategory) {
+                return post.category.id === selectedCategory.value;
+            }
+
+            return true;
+        });
+        setPosts(newPosts);
     };
 
     // Update posts when selectedLocation or selectedCategory changes
     useEffect(() => {
-        console.log("selectedLocation", selectedLocation);
-        console.log("selectedCategory", selectedCategory);
-
         const getPosts = async () => {
             try {
                 const { data } = await axiosClient.get("/api/posts", {
@@ -80,38 +148,41 @@ export default function Posts() {
                         別怕，我們一起回家
                     </p>
                 </div>
-                <div className="group relative mt-8 h-56 w-2/5 rounded border-4 border-double border-l-teal-950 border-opacity-10 hover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
-                    <p>根據您的條件搜尋...</p>
+                <div className="group relative mt-8 h-56 w-2/5 space-y-4 rounded border-4 border-double border-l-teal-950 border-opacity-10 px-10 py-4 hover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
+                    {/* for searching purpose */}
+                    <p className="text-xl text-white">依據您的需求搜尋</p>
                     <div className="flex items-center gap-6 sm:col-span-6">
-                        <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
-                            Category:
+                        <label className="block text-sm font-medium leading-6 text-white" htmlFor="current-location">
+                            類別:
                         </label>
                         <Select
-                            className="flex-1"
+                            className="w-10 flex-1"
                             id="category"
                             name="category"
                             options={categories}
                             placeholder="Select a category"
+                            styles={customStyles}
                             value={selectedCategory}
                             onChange={setSelectedCategory}
                         />
                     </div>
                     <div className="flex items-center gap-6 sm:col-span-6">
-                        <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
-                            Current location:
+                        <label className="block text-sm font-medium leading-6 text-white" htmlFor="current-location">
+                            現在位置:
                         </label>
                         <Select
-                            className="flex-1 bg-white"
+                            className="flex-1"
                             id="current-location"
                             name="current-location"
                             options={locations}
                             placeholder="Select current location"
+                            styles={customStyles}
                             value={selectedLocation}
                             onChange={setSelectedLocation}
                         />
                     </div>
                     <button
-                        className="invisible absolute bottom-4 right-4 ml-2 animate-bounce rounded-lg border border-slate-700 bg-gradient-to-r from-green-400 via-green-500 to-green-600 p-2.5 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-1 focus:ring-green-300 group-hover:visible"
+                        className="invisible absolute bottom-1 right-4 ml-2 animate-bounce rounded-lg border border-slate-700 bg-gradient-to-r from-green-400 via-green-500 to-green-600 p-2.5 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-1 focus:ring-green-300 group-hover:visible"
                         type="submit"
                         onClick={onSearch}
                     >
@@ -154,13 +225,11 @@ export default function Posts() {
 
             <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3">
                 {posts && posts.map((post) => (
-                    <a href={`/posts/${post.id}`}>
+                    <a key={post.id} href={`/posts/${post.id}`}>
                         <article
-                            key={post.id}
                             className=" flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl
                     transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
                         >
-
 
                             <img alt="" className="w-12/12  rounded-lg grayscale-[35%]" src="https://source.unsplash.com/6GMq7AGxNbE" />
 
