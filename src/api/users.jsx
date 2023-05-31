@@ -6,6 +6,8 @@ export const addUser = async (user) => {
         email: user.email,
         name: user.name,
         avatar_url: user.avatar_url,
+        signature: user.signature,
+        bio: user.bio,
     });
 
     return response;
@@ -27,6 +29,8 @@ export const updateUser = async (user) => {
     console.log("user", user);
     const response = await axiosClient.put("/api/users/me", {
         name: user.name,
+        signature: user.signature,
+        bio: user.bio,
     });
 
     return response;
