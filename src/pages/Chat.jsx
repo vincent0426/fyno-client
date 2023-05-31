@@ -67,12 +67,12 @@ function ChatPage() {
                                     <div className={classNames(groupUserJoined && groupUserJoined[messageUser.id]
                                             && "absolute animate-ping -top-2 right-0 w-4 h-4 rounded-full bg-green-400")}
                                     />
-                                    <button
+                                     <button
                                         className={classNames(
                                             "w-11/12 px-4 py-2 text-left border-2 mb-1 mx-1.5",
                                             selectedReceiver === messageUser.id
-                                                ? "bg-gray-300 ring ring-zinc-500/50 hover:scale-105"
-                                                : "bg-white hover:scale-105",
+                                                ? "bg-gray-300 ring ring-zinc-500/50 hover:scale-105 hover:bg-teal-300 rounded-2xl"
+                                                : "bg-white hover:scale-105 hover:bg-teal-300 rounded-2xl",
 
                                         )}
                                         type="button"

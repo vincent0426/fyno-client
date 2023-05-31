@@ -102,8 +102,8 @@ function Profile() {
                                 <input 
                                     readOnly={!isEditing}
                                     className={classNames(
-                                        "italic text-lg break-words absolute bottom-[52px] px-4\
-                                        w-200px md:w-[270px] lg:w-[360px] xl:w-[400px]",
+                                        "italic text-lg break-words absolute bottom-[56px] px-4 text-gray-600\
+                                        w-200px md:w-[270px] lg:w-[360px] xl:w-[400px] shadow-xl",
                                         isEditing
                                             ? "bg-white ring ring-zinc-500/50 hover:border-2 hover:scale-105"
                                             : "bg-transparent",
@@ -140,11 +140,14 @@ function Profile() {
                     <div className="w-11/12 bg-gray-100 h-[420px] mx-auto flex flex-row rounded-md p-4 lg:w-10/12 xl:w-8/12">
                         <div className="h-full w-[480px] bg-gray-300 z-10 align-center mr-4 flex flex-col">
                             <div className="font-semibold mx-auto justify-center text-4xl m-4">關於我 </div>
-                            <input 
+                            <div className="italic text-sm break-words px-4 text-gray-600\
+                                        mx-auto">{user.email}</div>
+                            <textarea
                                 readOnly={!isEditing}
                                 className={classNames(
-                                    "text-lg break-words px-4 h-full mx-auto align-top\
-                                    w-200px md:w-[270px] lg:w-[360px] xl:w-[400px]",
+                                    "text-lg break-words px-4 py-2 h-[250px] mx-auto text-center mt-4\
+                                    w-200px md:w-[270px] lg:w-[360px] xl:w-[400px] shadow-teal-900 shadow-lg\
+                                    backdrop-saturate-200",
                                     isEditing
                                         ? "bg-white ring ring-zinc-500/50 hover:border-2 hover:scale-105"
                                         : "bg-transparent",
@@ -159,24 +162,25 @@ function Profile() {
                                 }}
                             />
                         </div>
-                        <div className="w-4 shrink bg-gray-200"></div>
-                        <div className="h-full w-[400px] bg-no-repeat bg-cover bg-center rounded-bl-3xl" 
-                             style={{ backgroundImage: `url(${profiledog})` }}>
-                        </div>
-                        <div className="w-4 shrink bg-gray-200"></div>
-                        
-                        {/* <div className="w-2/12 bg-gray-300 h-full mx-auto">
-                            
-                        </div> */}
+                        <div className="h-full w-[300px] md:w-[400px] lg:w-[500px] flex flex-row">
+                            <div className="w-4 shrink bg-gray-200"></div>
+                            <div className="h-full w-[300px] md:w-[350px] lg:w-[420px] bg-no-repeat bg-cover bg-center rounded-bl-3xl duration-300 origin-top-right hover:-rotate-12 " 
+                                style={{ backgroundImage: `url(${profiledog})` }}>
+                            </div>
+                            <div className="w-4 shrink bg-gray-200"></div>
+                        </div>         
                     </div>
                 </section>
                 <section>
-                    <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3">
+                    <div className="font-semibold mx-auto justify-center text-4xl m-4 text-center">
+                        我的所有貼文
+                    </div>
+                    <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3 bg-gray-200">
                         {myposts && myposts.map((post) => (
                             <article
                                 key={post.id}
                                 className=" flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl
-                        transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
+                        transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-indigo-200 md:h-[32rem]"
                             >
                                 <img alt="" className="w-12/12  rounded-lg grayscale-[35%]" src="https://source.unsplash.com/6GMq7AGxNbE" />
 
