@@ -36,7 +36,7 @@ export default function Header() {
     const { logout } = useLogout();
     return (
         isAuthenticating ? (
-            <div className="h-onePage flex items-center justify-center">
+            <div className="flex h-onePage items-center justify-center">
                 <CircleLoader color="#6B46C1" />
             </div>
         ) : (
