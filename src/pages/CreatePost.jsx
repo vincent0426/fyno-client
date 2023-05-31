@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { BeatLoader } from "react-spinners";
 import { v4 as uuidv4 } from "uuid";
 
 import { getPresignedUrl } from "../api/s3";
@@ -13,6 +14,7 @@ import { generateFile, generatePostImages } from "../utils/post";
 export default function CreatePost() {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const [selectedOption, setSelectedOption] = useState({
         kind: "",
         name: "",
@@ -71,6 +73,7 @@ export default function CreatePost() {
     const onSubmit = async (e) => {
         e.preventDefault();
         // Generate a unique ID for each post
+        setIsLoading(true);
         const postId = uuidv4();
         console.log("submit", postId);
 
@@ -78,32 +81,28 @@ export default function CreatePost() {
 
         // If there are images, upload them to S3
         if (images) {
-            // Generate object with image url and rank
             postImages = generatePostImages(postImages, images, postId, user);
 
-            images.forEach(async (image, index) => {
-                // Generate presigned URL
+            const promises = images.map(async (image, index) => {
                 const key = `${postId}/${index + 1}`;
                 const { data: { url: presignedURL } } = await getPresignedUrl(key);
                 console.log(`index: ${index}, presignedURL: ${presignedURL}`);
-                // Only uncomment this line if you want to upload images to S3
-                const file = generateFile(image);
-                // const response = await axios.put(presignedURL, file);
-                // console.log(response);
+                const file = await generateFile(image);
+                return axios.put(presignedURL, file);
             });
+
+            const responses = await Promise.all(promises);
+            console.log("responses", responses);
+        } else {
+            // If there are no images, set default images
+            postImages = [
+                {
+                    url: "https://source.unsplash.com/6GMq7AGxNbE",
+                    rank: 1,
+                },
+            ];
         }
 
-        // console.log(postImages);
-        const tempPostImages = [
-            {
-                url: `https://fyno-post-images.s3.ap-northeast-1.amazonaws.com/2f5c4a5a-f186-4057-af3f-e04876e14a11/${postId}/0`,
-                rank: 1,
-            },
-            {
-                url: `https://fyno-post-images.s3.ap-northeast-1.amazonaws.com/2f5c4a5a-f186-4057-af3f-e04876e14a11/${postId}/1`,
-                rank: 2,
-            },
-        ];
         console.log(selectedOption);
         console.log(selectedOption.category.value);
         console.log(selectedOption.location.value);
@@ -120,15 +119,18 @@ export default function CreatePost() {
             category: {
                 id: selectedOption.category.value,
             },
-            post_images: tempPostImages,
+            // post_images: tempPostImages,
+            post_images: postImages,
         };
-        console.log(requestBody);
-        const response = await axiosClient.post("http://localhost:8080/api/posts", requestBody);
-        console.log(response);
+
+        const response = await axiosClient.post("/api/posts", requestBody);
 
         if (response.status === 201) {
             navigate(`/posts/${response.data.postID}`);
+            navigate(0);
         }
+
+        setIsLoading(false);
     };
 
     return (
@@ -309,7 +311,7 @@ export default function CreatePost() {
                                 type="submit"
                                 onClick={onSubmit}
                             >
-                                Submit
+                                {isLoading ? <BeatLoader color="white" size={6} /> : "Save"}
                             </button>
                         </div>
                     </form>

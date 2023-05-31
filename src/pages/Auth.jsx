@@ -34,7 +34,7 @@ export default function Signup() {
             id: data.user.id,
             email: data.user.email,
             name: data.user.email,
-            avatar_url: import.meta.env.VITE_DEFAULT_AVATAR,
+            avatar_url: "https://dtcmvoukafmgyubzbysj.supabase.co/storage/v1/object/public/avatars/Monster.webp",
         });
 
         Swal.fire(

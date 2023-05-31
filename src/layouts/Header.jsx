@@ -20,16 +20,12 @@ const navigation = [
         href: "/posts",
     },
     {
-        name: "Features",
-        href: "#",
-    },
-    {
         name: "Chat",
         href: "/chat",
     },
     {
-        name: "Company",
-        href: "#",
+        name: "Must Know!",
+        href: "/information",
     },
 ];
 
@@ -40,7 +36,7 @@ export default function Header() {
     const { logout } = useLogout();
     return (
         isAuthenticating ? (
-            <div className="h-onePage flex items-center justify-center">
+            <div className="flex h-onePage items-center justify-center">
                 <CircleLoader color="#6B46C1" />
             </div>
         ) : (
@@ -77,6 +73,7 @@ export default function Header() {
                                     >
                                         <PencilSquareIcon className="inline-block h-5 w-5" />
                                     </a>
+
                                 ) : (
                                     <a
                                         key={item.name}
@@ -85,6 +82,7 @@ export default function Header() {
                                     >
                                         {item.name}
                                     </a>
+
                                 )
                             ))}
                         </div>
