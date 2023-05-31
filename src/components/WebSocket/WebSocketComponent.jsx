@@ -190,7 +190,7 @@ function WebSocketComponent({ rid, setGroupUserJoined }) {
                     </div>
                 </div>
                 {groupUser && (
-                    <div className="mx-auto w-[95%] max-w-2xl pb-10 pt-4">
+                    <div className="mx-auto w-[95%] max-w-2xl pb-10 pt-6">
                         {messageHistory.map((message, index) => (
                             <div key={message.id}>
                                 {message.sender === user.id ? (
