@@ -13,7 +13,7 @@ export default function Example() {
 
     useEffect(() => {
         if (countdown === 0) {
-            window.location.href = "http://localhost:5173/";
+            window.location.href = "/";
         }
     }, [countdown]);
 
