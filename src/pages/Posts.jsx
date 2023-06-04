@@ -139,15 +139,15 @@ export default function Posts() {
             <div className="mx-auto h-96 max-w-7xl bg-[url('https://source.unsplash.com/6GMq7AGxNbE')] bg-cover bg-fixed bg-center bg-no-repeat p-6 lg:px-8">
                 <div className="mx-auto max-w-6xl">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">開始認養你的下一個寵物！</h2>
-                    <p className="mt-2 text-lg leading-8 text-gray-600">
+                    <p className="mt-2 text-lg leading-8 text-gray-800">
                         別怕，我們一起回家
                     </p>
                 </div>
-                <div className="group relative mt-8 h-56 w-2/5 space-y-4 rounded border-4 border-double border-l-teal-950 border-opacity-10 px-10 py-4 hover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
+                <div className="group relative mt-8 h-56 w-2/5 space-y-4 rounded border-4 border-double bg-slate-300 bg-opacity-20 border-opacity-10 px-10 py-4 bghover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
                     {/* for searching purpose */}
                     <p className="text-xl text-white">依據您的需求搜尋</p>
                     <div className="flex items-center gap-6 sm:col-span-6">
-                        <label className="block text-sm font-medium leading-6 text-white" htmlFor="current-location">
+                        <label className="block text-xl font-medium leading-6 text-white" htmlFor="current-location">
                             類別:
                         </label>
                         <Select
@@ -155,14 +155,14 @@ export default function Posts() {
                             id="category"
                             name="category"
                             options={categories}
-                            placeholder="Select a category"
+                            placeholder="選擇物種"
                             styles={customStyles}
                             value={selectedCategory}
                             onChange={setSelectedCategory}
                         />
                     </div>
                     <div className="flex items-center gap-6 sm:col-span-6">
-                        <label className="block text-sm font-medium leading-6 text-white" htmlFor="current-location">
+                        <label className="block text-xl font-medium leading-6 text-white" htmlFor="current-location">
                             現在位置:
                         </label>
                         <Select
@@ -170,7 +170,7 @@ export default function Posts() {
                             id="current-location"
                             name="current-location"
                             options={locations}
-                            placeholder="Select current location"
+                            placeholder="選擇所在縣市"
                             styles={customStyles}
                             value={selectedLocation}
                             onChange={setSelectedLocation}

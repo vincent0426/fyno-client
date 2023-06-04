@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import Cat from '../images/cat.jpg'
 import Turtle from '../images/turtle.jpg'
 import axiosClient from "../utils/axiosClient";
+import dog from "../images/dog.jpg";
+import dog2 from "../images/dog2.jpg";
+import dog3 from "../images/dog3.jpg";
+
 const links = [
     { name: '動物保護資訊網', href: 'https://animal.coa.gov.tw/' },
     { name: '台灣流浪動物救援協會', href: 'https://thara.eoffering.org.tw/' },
@@ -9,10 +13,10 @@ const links = [
     { name: '世界自然基金會', href: 'https://www.worldwildlife.org/' },
 ]
 const stats = [
-    { name: '每年因為流浪動物造成的傷害', value: '99+', src: Turtle },
-    { name: '每年...', value: '99+', src: Turtle },
-    { name: '每年...', value: '99+', src: Turtle },
-    { name: '每年...', value: '99+', src: Turtle },
+    { name: '觀念沒有變，問題就不會改變', value: '人的腦袋沒有變，沒有結紮沒有領養，問題就是一直存在', src: Cat },
+    { name: '動物保護不是科目 是一個生活的態度', value: '讓孩子們從小培養這個素養，以後養動物的態度就會不一樣', src: Turtle },
+    { name: '期待動保教育 傳承新的未來', value: '動保的觀念，從大人開始，一代一代將新的觀念傳承下去', src: dog },
+    { name: '視貓狗為家人，謹慎面對每次送養', value: '透過FYNO，幫浪浪找到真正的final home!', src: dog3 },
 ]
 
 export default function Example() {
@@ -54,7 +58,7 @@ export default function Example() {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mx-auto lg:mx-0">
                     <h2 className="text-4xl font-bold tracking-tight text-black sm:text-6xl">你知道嗎?</h2>
-                    <p className="mt-10 text-lg max-w-xl leading-8 text-black">
+                    <p className="mt-10 text-lg max-w-xl leading-8 text-black font-bold">
                         全球每年有數百萬隻流浪動物面臨無家可歸的困境。些數量巨大的流浪動物對於社會和環境都帶來了壓力。
                     </p>
                     <p className="mt-10 text-lg leading-8 text-black font-semibold underline decoration-teal-600 decoration-4">
@@ -73,11 +77,11 @@ export default function Example() {
                         {stats.map((stat) => (
                             <div key={stat.name} className="rounded-xl shadow-xl transition-transform duration-500 transform group hover:rotate-y-12">
                                 <div className="relative">
-                                    <img alt="" className="rounded-xl shadow-xl shadow-black/40" src={stat.src} />
+                                    <img alt="" className="rounded-xl object-cover h-96 w-80 shadow-xl shadow-black/40" src={stat.src} />
                                 </div>
-                                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-white opacity-0 hover:opacity-90 transform rotate-y-180">
-                                    <dt className="text-base leading-7 text-black">{stat.name}</dt>
-                                    <dd className="text-2xl font-bold leading-9 tracking-tight text-black">{stat.value}</dd>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-white opacity-0 hover:opacity-90 transform rotate-y-180 text-center">
+                                    <dd className="text-xl  leading-9 tracking-tight text-black text-center">{stat.name}:</dd>
+                                    <dd className="text-2xl font-bold leading-9 tracking-tight text-black text-center">{stat.value}</dd>
                                 </div>
                             </div>
                         ))}

@@ -12,7 +12,7 @@ function GoogleLogin() {
             onClick={() => loginWithProvider("google")}
         >
             <FcGoogle className="text-xl" />
-            <p className="w-full text-center">Sign in with Google</p>
+            <p className="w-full text-center">使用 Google 帳號</p>
         </button>
     );
 }

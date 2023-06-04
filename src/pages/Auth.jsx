@@ -83,7 +83,7 @@ export default function Signup() {
                             <form action="#" className="space-y-6" method="POST">
                                 <div>
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="email">
-                                        Email address
+                                        電子郵件
                                     </label>
                                     <div className="mt-2">
                                         <input
@@ -101,7 +101,7 @@ export default function Signup() {
 
                                 <div>
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="password">
-                                        Password
+                                        密碼
                                     </label>
                                     <div className="mt-2">
                                         <input
@@ -126,23 +126,23 @@ export default function Signup() {
                                             type="checkbox"
                                         />
                                         <label className="ml-3 block text-sm leading-6 text-gray-900" htmlFor="remember-me">
-                                            Remember me
+                                            記住我
                                         </label>
                                     </div>
 
                                     <div className="text-sm leading-6">
                                         <a className="font-semibold text-indigo-600 hover:text-indigo-500" href="#">
-                                            Forgot password?
+                                            忘記密碼?
                                         </a>
                                     </div>
                                 </div>
-                                <Button loading={loginLoading} text="Sign in" onClick={onLogin} />
+                                <Button loading={loginLoading} text="登入" onClick={onLogin} />
                             </form>
 
                             <p className="mt-6 space-x-2 text-center text-sm leading-5 text-gray-500">
-                                <span className="text-sm text-gray-500">Don&apos;t have an account?</span>
+                                <span className="text-sm text-gray-500">尚未擁有帳號？</span>
                                 <button className="font-semibold text-indigo-600 hover:text-indigo-500" type="button" onClick={onViewChange}>
-                                    Sign up
+                                    註冊
                                 </button>
                             </p>
                         </>
@@ -151,7 +151,7 @@ export default function Signup() {
                             <form className="space-y-6" method="POST">
                                 <div>
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="email">
-                                        Email address
+                                        電子郵件
                                     </label>
                                     <div className="mt-2">
                                         <input
@@ -169,7 +169,7 @@ export default function Signup() {
 
                                 <div>
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="password">
-                                        Password
+                                        密碼
                                     </label>
                                     <div className="mt-2">
                                         <input
@@ -188,9 +188,9 @@ export default function Signup() {
                             </form>
 
                             <p className="mt-6 space-x-2 text-center text-sm leading-5 text-gray-500">
-                                <span className="text-sm text-gray-500">Already have an account?</span>
+                                <span className="text-sm text-gray-500">已經擁有帳號？</span>
                                 <button className="font-semibold text-indigo-600 hover:text-indigo-500" type="button" onClick={onViewChange}>
-                                    Sign in
+                                    S登入
                                 </button>
                             </p>
                         </>
@@ -200,7 +200,7 @@ export default function Signup() {
                             <div className="w-full border-t border-gray-200" />
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="bg-white px-2 text-gray-500">Or continue with</span>
+                            <span className="bg-white px-2 text-gray-500">或是使用</span>
                         </div>
                     </div>
                     <div className="mt-6 w-full gap-4">

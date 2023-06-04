@@ -104,26 +104,26 @@ function WebSocketComponent({ rid, setGroupUserJoined }) {
             console.log("webSocketRef.current", webSocketRef.current);
 
             switch (webSocketRef.current.readyState) {
-            case WebSocket.CONNECTING:
-                console.log("WebSocket connecting");
-                break;
-            case WebSocket.OPEN:
-                console.log("WebSocket connected");
-                break;
-            case WebSocket.CLOSING:
-                console.log("WebSocket closing");
-                break;
-            case WebSocket.CLOSED:
-                console.log("WebSocket closed");
-                //
-                setTimeout(() => {
-                    const websocketId = Cookies.get("websocket-id");
-                    const newUrl = `ws://${window.location.hostname}:8080/ws/${user.id}?websocketId=${websocketId}`;
-                    window.location.href = `${window.location.origin}?websocketUrl=${newUrl}`;
-                }, 5000);
-                break;
-            default:
-                break;
+                case WebSocket.CONNECTING:
+                    console.log("WebSocket connecting");
+                    break;
+                case WebSocket.OPEN:
+                    console.log("WebSocket connected");
+                    break;
+                case WebSocket.CLOSING:
+                    console.log("WebSocket closing");
+                    break;
+                case WebSocket.CLOSED:
+                    console.log("WebSocket closed");
+                    //
+                    setTimeout(() => {
+                        const websocketId = Cookies.get("websocket-id");
+                        const newUrl = `ws://${window.location.hostname}:8080/ws/${user.id}?websocketId=${websocketId}`;
+                        window.location.href = `${window.location.origin}?websocketUrl=${newUrl}`;
+                    }, 5000);
+                    break;
+                default:
+                    break;
             }
         }
     };
