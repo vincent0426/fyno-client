@@ -65,7 +65,7 @@ function ChatPage() {
                             {messageUsers && messageUsers.map((messageUser) => (
                                 <li key={messageUser.id} className="relative">
                                     <div className={classNames(groupUserJoined && groupUserJoined[messageUser.id]
-                                            && "absolute animate-ping -top-2 right-0 w-4 h-4 rounded-full bg-green-400")}
+                                        && "absolute animate-ping -top-2 right-0 w-4 h-4 rounded-full bg-green-400")}
                                     />
                                     <button
                                         className={classNames(

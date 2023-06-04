@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import Cat from '../images/cat.jpg'
 import Turtle from '../images/turtle.jpg'
 import axiosClient from "../utils/axiosClient";
+import dog from "../images/dog.jpg";
+import dog2 from "../images/dog2.jpg";
+import dog3 from "../images/dog3.jpg";
+
 const links = [
     { name: '動物保護資訊網', href: 'https://animal.coa.gov.tw/' },
     { name: '台灣流浪動物救援協會', href: 'https://thara.eoffering.org.tw/' },
@@ -9,10 +13,10 @@ const links = [
     { name: '世界自然基金會', href: 'https://www.worldwildlife.org/' },
 ]
 const stats = [
-    { name: '每年因為流浪動物造成的傷害', value: '99+', src: Turtle },
+    { name: '每年因為流浪動物造成的傷害', value: '99+', src: Cat },
     { name: '每年...', value: '99+', src: Turtle },
-    { name: '每年...', value: '99+', src: Turtle },
-    { name: '每年...', value: '99+', src: Turtle },
+    { name: '每年...', value: '99+', src: dog },
+    { name: '每年...', value: '99+', src: dog3 },
 ]
 
 export default function Example() {
@@ -54,7 +58,7 @@ export default function Example() {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mx-auto lg:mx-0">
                     <h2 className="text-4xl font-bold tracking-tight text-black sm:text-6xl">你知道嗎?</h2>
-                    <p className="mt-10 text-lg max-w-xl leading-8 text-black">
+                    <p className="mt-10 text-lg max-w-xl leading-8 text-black font-bold">
                         全球每年有數百萬隻流浪動物面臨無家可歸的困境。些數量巨大的流浪動物對於社會和環境都帶來了壓力。
                     </p>
                     <p className="mt-10 text-lg leading-8 text-black font-semibold underline decoration-teal-600 decoration-4">
@@ -73,7 +77,7 @@ export default function Example() {
                         {stats.map((stat) => (
                             <div key={stat.name} className="rounded-xl shadow-xl transition-transform duration-500 transform group hover:rotate-y-12">
                                 <div className="relative">
-                                    <img alt="" className="rounded-xl shadow-xl shadow-black/40" src={stat.src} />
+                                    <img alt="" className="rounded-xl object-cover h-96 w-80 shadow-xl shadow-black/40" src={stat.src} />
                                 </div>
                                 <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-white opacity-0 hover:opacity-90 transform rotate-y-180">
                                     <dt className="text-base leading-7 text-black">{stat.name}</dt>
