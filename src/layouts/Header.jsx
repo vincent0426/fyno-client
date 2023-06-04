@@ -16,15 +16,15 @@ const navigation = [
         href: "/create-post",
     },
     {
-        name: "Posts",
+        name: "貼文",
         href: "/posts",
     },
     {
-        name: "Chat",
+        name: "聊天室",
         href: "/chat",
     },
     {
-        name: "Must Know!",
+        name: "關於浪浪",
         href: "/information",
     },
 ];
@@ -98,7 +98,7 @@ export default function Header() {
                                             className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900"
                                             href="/auth"
                                         >
-                                            Log in
+                                            登入
                                             {" "}
                                             <span aria-hidden="true">&rarr;</span>
                                         </a>
@@ -152,7 +152,7 @@ export default function Header() {
                                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                                     href="/auth"
                                                 >
-                                                    Log in
+                                                    登入
                                                     {" "}
                                                     <span aria-hidden="true">&rarr;</span>
                                                 </a>

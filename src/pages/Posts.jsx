@@ -155,7 +155,7 @@ export default function Posts() {
                             id="category"
                             name="category"
                             options={categories}
-                            placeholder="Select a category"
+                            placeholder="選擇物種"
                             styles={customStyles}
                             value={selectedCategory}
                             onChange={setSelectedCategory}
@@ -170,7 +170,7 @@ export default function Posts() {
                             id="current-location"
                             name="current-location"
                             options={locations}
-                            placeholder="Select current location"
+                            placeholder="選擇所在縣市"
                             styles={customStyles}
                             value={selectedLocation}
                             onChange={setSelectedLocation}

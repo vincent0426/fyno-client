@@ -50,7 +50,7 @@ function ProfileDropdown({ user, logout }) {
                                 type="button"
                                 onClick={onUserClick}
                             >
-                                Profile
+                                個人檔案
                             </button>
                         )}
                     </Menu.Item>
@@ -66,7 +66,7 @@ function ProfileDropdown({ user, logout }) {
                                     logout();
                                 }}
                             >
-                                Log out
+                                登出
                             </button>
                         )}
                     </Menu.Item>

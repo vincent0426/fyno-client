@@ -68,19 +68,17 @@ export default function Hero() {
                                         Find Your Next Owner
                                     </h1>
                                     <p className="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                                        Our mission is to help pets find their forever homes, and we do so by creating a
-                                        safe and easy-to-use platform that makes it simple for pet owners to list their
-                                        pets for adoption and for potential owners to browse through available pets.
+                                        我們的使命是幫助寵物找到它們永遠的家園，我們通過創建一個安全且易於使用的平台來實現這一目標，讓寵物主人可以輕鬆地列出他們想要領養的寵物，而潛在的領養者則可以瀏覽現有的寵物資訊。
                                     </p>
                                     <div className="mt-10 flex items-center gap-x-6">
                                         <a
                                             className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                             href="/posts"
                                         >
-                                            Get started
+                                            開始領養
                                         </a>
                                         <a className="text-sm font-semibold leading-6 text-gray-900" href="/create-post">
-                                            Create your post
+                                            建立你的貼文！
                                             {" "}
                                             <span aria-hidden="true">→</span>
                                         </a>

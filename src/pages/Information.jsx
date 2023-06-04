@@ -13,10 +13,10 @@ const links = [
     { name: '世界自然基金會', href: 'https://www.worldwildlife.org/' },
 ]
 const stats = [
-    { name: '每年因為流浪動物造成的傷害', value: '99+', src: Cat },
-    { name: '每年...', value: '99+', src: Turtle },
-    { name: '每年...', value: '99+', src: dog },
-    { name: '每年...', value: '99+', src: dog3 },
+    { name: '觀念沒有變，問題就不會改變', value: '人的腦袋沒有變，沒有結紮沒有領養，問題就是一直存在', src: Cat },
+    { name: '動物保護不是科目 是一個生活的態度', value: '讓孩子們從小培養這個素養，以後養動物的態度就會不一樣', src: Turtle },
+    { name: '期待動保教育 傳承新的未來', value: '動保的觀念，從大人開始，一代一代將新的觀念傳承下去', src: dog },
+    { name: '視貓狗為家人，謹慎面對每次送養', value: '透過FYNO，幫浪浪找到真正的final home!', src: dog3 },
 ]
 
 export default function Example() {
@@ -79,9 +79,9 @@ export default function Example() {
                                 <div className="relative">
                                     <img alt="" className="rounded-xl object-cover h-96 w-80 shadow-xl shadow-black/40" src={stat.src} />
                                 </div>
-                                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-white opacity-0 hover:opacity-90 transform rotate-y-180">
-                                    <dt className="text-base leading-7 text-black">{stat.name}</dt>
-                                    <dd className="text-2xl font-bold leading-9 tracking-tight text-black">{stat.value}</dd>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-white opacity-0 hover:opacity-90 transform rotate-y-180 text-center">
+                                    <dd className="text-xl  leading-9 tracking-tight text-black text-center">{stat.name}:</dd>
+                                    <dd className="text-2xl font-bold leading-9 tracking-tight text-black text-center">{stat.value}</dd>
                                 </div>
                             </div>
                         ))}

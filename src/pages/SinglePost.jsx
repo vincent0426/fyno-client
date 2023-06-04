@@ -109,46 +109,46 @@ function SinglePost() {
                             href="/posts"
                         >
                             <FontAwesomeIcon className="mr-2 inline-flex w-4" icon={faArrowLeft} />
-                            Back To All Posts
+                            瀏覽全部貼文
                         </a>
                         <div className=" font-primary">
                             <h1 className="py-2 text-3xl font-extrabold leading-relaxed text-black sm:py-4">
-                                Name:
-                                {" "}
+                                名字:
+                                {"  "}
                                 {post.name}
                             </h1>
-                            <p className="text-xl font-medium">
-                                Description:
-                                {" "}
+                            <p className="text-xl font-medium ">
+                                描述:
+                                {"  "}
                                 {post.content}
                             </p>
                             <div className="px-1 py-4 text-xl font-medium">
-                                Category:
-                                {" "}
+                                物種:
+                                {"  "}
                                 {post.category.name}
                                 <br />
                                 <div className="my-2" />
-                                Age:
-                                {" "}
+                                年齡:
+                                {"  "}
                                 {post.age}
                                 <br />
                                 <div className="my-2" />
-                                Gender:
-                                {" "}
+                                性別:
+                                {"  "}
                                 {post.gender}
                                 <br />
                                 <div className="my-2" />
-                                Kind:
-                                {" "}
+                                品種:
+                                {"  "}
                                 {post.kind}
                                 <br />
                                 <div className="my-2" />
-                                Location:
-                                {" "}
+                                所在縣市:
+                                {"  "}
                                 {post.location.name}
                             </div>
                             <div className="flex">
-                                <div className="mr-8 px-1 py-4 text-xl font-medium">Contact the owner:</div>
+                                <div className="mr-8 px-1 py-4 text-xl font-medium">私訊主人:</div>
                                 <button
                                     className={classNames(
                                         "flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600",

@@ -135,26 +135,26 @@ export default function CreatePost() {
 
     return (
         <div className="mx-auto flex h-5/6 max-w-5xl
-                bg-gradient-to-br from-violet-200 to-emerald-50"
+                bg-gradient-to-br from-emerald-300/[.2] to-violet-200"
         >
             <div className="w-1/2">
                 <ImageUploader images={images} setImages={setImages} />
             </div>
-            <div className="mx-auto w-1/2 max-w-md border-2 border-l-indigo-500 px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto w-1/2 max-w-md  px-4 sm:px-6 lg:px-8">
                 <div className="py-3">
                     <form>
                         <div className="border-gray-900/10">
                             <div className="space-y-6">
                                 <div className="flex items-center gap-6 sm:col-span-6">
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
-                                        Category:
+                                        物種:
                                     </label>
                                     <Select
                                         className="flex-1"
                                         id="category"
                                         name="category"
                                         options={categories}
-                                        placeholder="Select a category"
+                                        placeholder="選擇物種"
                                         value={selectedOption.category}
                                         onChange={(e) => onChange(
                                             {
@@ -167,7 +167,7 @@ export default function CreatePost() {
                                 </div>
                                 <div className="flex w-full items-center gap-6">
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="username">
-                                        Kind:
+                                        品種:
                                     </label>
                                     <input
                                         className="block flex-1  rounded-md bg-white
@@ -178,7 +178,7 @@ export default function CreatePost() {
                                 </div>
                                 <div className="flex items-center gap-6 sm:col-span-4">
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="username">
-                                        Name:
+                                        名字:
                                     </label>
                                     <input
                                         className="block flex-1  rounded-md bg-white
@@ -191,14 +191,14 @@ export default function CreatePost() {
                                 {/* Current Location options */}
                                 <div className="flex items-center gap-6 sm:col-span-6">
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="current-location">
-                                        Current Location:
+                                        目前地址:
                                     </label>
                                     <Select
                                         className="flex-1 bg-white"
                                         id="current-location"
                                         name="current-location"
                                         options={locations}
-                                        placeholder="Select current location"
+                                        placeholder="選擇所在縣市"
                                         value={selectedOption.location}
                                         onChange={(e) => onChange(
                                             {
@@ -212,7 +212,7 @@ export default function CreatePost() {
                                 {/* Sex F M Don't know */}
                                 <div className="mt-6 flex items-center justify-between gap-6">
                                     <div className="flex gap-4">
-                                        <h2>Gender</h2>
+                                        <h2>性別</h2>
                                         <div className="flex items-center gap-x-3">
                                             <div className="flex items-center gap-x-3">
                                                 <input
@@ -261,7 +261,7 @@ export default function CreatePost() {
                                                     className="block text-sm font-medium leading-6 text-gray-900"
                                                     htmlFor="gender-unknown"
                                                 >
-                                                    Don&apos;t know
+                                                    未知
                                                 </label>
                                             </div>
                                         </div>
@@ -271,7 +271,7 @@ export default function CreatePost() {
                                 {/* Age */}
                                 <div className="flex items-center gap-6 sm:col-span-6">
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="age">
-                                        Age:
+                                        年齡:
                                     </label>
                                     <input
                                         className="block flex-1  rounded-md bg-white
@@ -288,7 +288,7 @@ export default function CreatePost() {
                                 {/* Content */}
                                 <div>
                                     <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="content">
-                                        Content:
+                                        更多描述:
                                     </label>
                                     <textarea
                                         className="w-full resize-none rounded-md  bg-white py-1.5  pl-1 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
@@ -304,14 +304,14 @@ export default function CreatePost() {
                         </div>
                         <div className="mt-6 flex items-center justify-end gap-x-6">
                             <button className="text-sm font-semibold leading-6 text-gray-900" type="button">
-                                Cancel
+                                取消
                             </button>
                             <button
                                 className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 type="submit"
                                 onClick={onSubmit}
                             >
-                                {isLoading ? <BeatLoader color="white" size={6} /> : "Save"}
+                                {isLoading ? <BeatLoader color="white" size={6} /> : "發佈"}
                             </button>
                         </div>
                     </form>

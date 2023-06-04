@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 
 function ImageUploader({ images, setImages }) {
     const onChange = (imageList) => {
-    // set uploaded images
+        // set uploaded images
         console.log(imageList);
         setImages(imageList);
     };
@@ -25,11 +25,11 @@ function ImageUploader({ images, setImages }) {
             >
                 {({ onImageUpload, onImageRemoveAll, imageList, onImageUpdate, onImageRemove }) => (
                     <>
-                        <div className="mx-auto mt-10 flex h-[400px] w-[360px] items-center justify-center  border">
+                        <div className="mx-auto mt-10 flex h-[400px] w-[360px] items-center justify-center">
                             <div className="m-10 h-full w-full bg-white">
                                 {imageList.length === 0 && (
                                     <p className="flex h-full w-full items-center justify-center text-gray-400">
-                                        Upload images
+                                        上傳圖片
                                     </p>
                                 )}
                                 <Carousel showArrows={false} showStatus={false} showThumbs={false}>
@@ -61,7 +61,7 @@ function ImageUploader({ images, setImages }) {
                                 type="button"
                                 onClick={onImageUpload}
                             >
-                                Upload Images
+                                上傳圖片
                             </button>
                             <button
                                 className="w-3.3/12 ml-2 rounded-md bg-red-500 px-4 py-2 text-white
@@ -69,7 +69,7 @@ function ImageUploader({ images, setImages }) {
                                 type="button"
                                 onClick={onImageRemoveAll}
                             >
-                                Remove Images
+                                移除圖片
                             </button>
                         </div>
                     </>
