@@ -1,6 +1,7 @@
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 
+import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -23,7 +24,7 @@ import { compose } from "./utils/utils";
 function App() {
     const Provider = compose([FlashProvider, AuthProvider]);
     return (
-        <>
+        <ErrorBoundary fallback={<Oops />}>
             <ToastContainer
                 closeOnClick
                 draggable
@@ -58,7 +59,7 @@ function App() {
                     </Routes>
                 </Provider>
             </Router>
-        </>
+        </ErrorBoundary>
     );
 }
 

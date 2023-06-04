@@ -90,12 +90,7 @@ export default function Posts() {
     useEffect(() => {
         const getPosts = async () => {
             try {
-                const { data } = await axiosClient.get("/api/posts", {
-                    params: {
-                        location_id: selectedLocation?.value,
-                        category_id: selectedCategory?.value,
-                    },
-                });
+                const { data } = await axiosClient.get("/api/posts");
                 setPosts(data.posts);
                 console.log("data", data);
             } catch (error) {
@@ -189,18 +184,17 @@ export default function Posts() {
                         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
                         <span className="sr-only">Search</span>
                     </button>
-
                 </div>
             </div>
-            {posts && posts.length && (
+            {posts.length > 0 && (
                 <div className="flex-column relative mt-10 flex h-[18rem] justify-evenly md:h-[24rem] md:flex-row">
                     <div>
-                        <div className="... absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2 truncate text-3xl font-semibold underline decoration-teal-600 decoration-4">您的每日推薦</div>
+                        <div className="absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2 truncate text-3xl font-semibold underline decoration-teal-600 decoration-4">您的每日推薦</div>
                     </div>
                     <div className="group absolute right-1/4  top-1/2 h-full w-1/3 -translate-y-1/2">
                         <div className="relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                             <div className="absolute inset-0">
-                                <img alt="" className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40" src="https://source.unsplash.com/J4itE356ie0" />
+                                <img alt="" className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40" src={posts[0].post_images[0].url} />
                             </div>
                             <div className="absolute inset-0 h-full w-full rounded-xl bg-black/80 px-12 text-center text-slate-200 [backface-visibility:hidden] [transform:rotateY(180deg)]">
                                 <div className="flex min-h-full flex-col items-center justify-center">
@@ -226,20 +220,17 @@ export default function Posts() {
             <div className="mt-4 grid grid-cols-2 place-content-evenly place-items-center gap-x-8 gap-y-4 border-t border-gray-200 p-9 pt-2 lg:grid-cols-3">
                 {posts && posts.map((post) => (
                     <a key={post.id} href={`/posts/${post.id}`}>
-                        <article
-                            className=" flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl
-                    transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]"
-                        >
-
-                            <img alt="" className="w-12/12  rounded-lg grayscale-[35%]" src="https://source.unsplash.com/6GMq7AGxNbE" />
-
+                        <article className=" flex-start delay-50 relative flex h-[24rem] max-w-xl flex-col rounded-xl bg-teal-50 p-2 shadow-xl transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-teal-300 md:h-[32rem]">
+                            <div className="relative h-[300px] w-[400px]">
+                                <img alt="" className="h-[300px] w-[400px] rounded-lg grayscale-[35%]" src={post.post_images[0]?.url} />
+                            </div>
                             <div className="relative h-full">
-                                <div className="align-center  mt-4 flex-col justify-between">
+                                <div className="align-center mt-4 flex-col justify-between">
                                     <h2 className="text-center text-sm font-bold md:text-2xl">{post.name}</h2>
                                     <div className="mt-2 justify-self-end text-center text-sm italic">{post.kind}</div>
                                 </div>
 
-                                <div className="absolute left-1/2 top-1/3  mx-auto h-0.5 min-h-[1%] w-2/6 -translate-x-1/2 -translate-y-1/2 self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-20" />
+                                <div className="absolute left-1/2 top-1/4  mx-auto h-0.5 min-h-[1%] w-2/6 -translate-x-1/2 -translate-y-1/2 self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-20" />
 
                                 <div className="absolute top-1/2 flex h-3/6 w-full justify-center px-4 text-gray-700">
                                     <span className="text-center text-sm font-black md:text-xl">{post.content}</span>
