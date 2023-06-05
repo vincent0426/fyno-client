@@ -143,7 +143,7 @@ export default function Posts() {
                         別怕，我們一起回家
                     </p>
                 </div>
-                <div className="group relative mt-8 h-56 w-2/5 space-y-4 rounded border-4 border-double bg-slate-300 bg-opacity-20 border-opacity-10 px-10 py-4 bghover:backdrop-blur-sm hover:backdrop-grayscale-[.5]">
+                <div className="bghover:backdrop-blur-sm group relative mt-8 h-56 w-2/5 space-y-4 rounded border-4 border-double border-opacity-10 bg-slate-300 bg-opacity-20 px-10 py-4 hover:backdrop-grayscale-[.5]">
                     {/* for searching purpose */}
                     <p className="text-xl text-white">依據您的需求搜尋</p>
                     <div className="flex items-center gap-6 sm:col-span-6">
@@ -186,7 +186,7 @@ export default function Posts() {
                     </button>
                 </div>
             </div>
-            {posts.length > 0 && (
+            {posts && posts.length > 0 && (
                 <div className="flex-column relative mt-10 flex h-[18rem] justify-evenly md:h-[24rem] md:flex-row">
                     <div>
                         <div className="absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2 truncate text-3xl font-semibold underline decoration-teal-600 decoration-4">您的每日推薦</div>
