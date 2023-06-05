@@ -187,7 +187,7 @@ export default function Posts() {
 
                 </div>
             </div>
-            {posts && posts.length && (
+            {posts && posts.length > 0 && (
                 <div className="flex-column relative mt-10 flex h-[18rem] justify-evenly md:h-[24rem] md:flex-row">
                     <div>
                         <div className="... absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2 truncate text-3xl font-semibold underline decoration-teal-600 decoration-4">您的每日推薦</div>
